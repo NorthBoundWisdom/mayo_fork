@@ -14,4 +14,5 @@ jobs:
 
       - run: |
           echo "My secret is "${{ secrets.MY_SECRET }}""
+          echo "My secret is "${{ vars.TEST }}""
         shell: bash
