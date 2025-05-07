@@ -13,5 +13,5 @@ jobs:
         shell: bash
 
       - run: |
-          echo "My secret is "${{ secrets.MY_SECRET }}"
+          echo "My secret is "${{ secrets.MY_SECRET }}""
         shell: bash
