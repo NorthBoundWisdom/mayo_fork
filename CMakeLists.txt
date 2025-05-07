@@ -266,36 +266,15 @@ endif()
 # OpenCascade
 ##########
 
-if(WIN32)
-    # Can't use find_package(OpenCASCADE) as OpenCASCADEConfig.cmake is broken for Windows platform
-    # See https://dev.opencascade.org/content/3rdparty-hard-coded-paths-when-building-against-opencascade
-    include(${PROJECT_SOURCE_DIR}/cmake/OpenCascadeWin.cmake)
-    if (OpenCASCADE_FOUND)
-        # Add OpenCASCADE include directory
+find_package(OpenCASCADE REQUIRED)
+if(OpenCASCADE_FOUND)
+    # It seems that OpenCascade cmake package files specify INTERFACE_INCLUDE_DIRECTORIES
+    # starting from 7.7.0 version only
+    # Older versions require to explicitly add OpenCascade include dir
+    get_target_property(OpenCASCADE_TKernel_INCLUDE_DIR TKernel INTERFACE_INCLUDE_DIRECTORIES)
+    list(FIND OpenCASCADE_TKernel_INCLUDE_DIR ${OpenCASCADE_INCLUDE_DIR} OpenCASCADE_TKernel_INCLUDE_DIR_IsSet)
+    if(OpenCASCADE_TKernel_INCLUDE_DIR_IsSet EQUAL -1)
         list(APPEND Mayo_IncludeDirectories ${OpenCASCADE_INCLUDE_DIR})
-
-        # Add OpenCASCADE library directories
-        # Note: QtCreator option "Run->Add build library search to PATH" will add to PATH env variable
-        #       the contents of MayoCore_LinkDirectories variable. For convenience, let's add also the
-        #       directories containing DLLs
-        list(
-            APPEND MayoCore_LinkDirectories
-            ${OpenCASCADE_BINARY_DIR}
-            ${OpenCASCADE_LIBRARY_DIR}
-            ${OpenCASCADE_3RDPARTY_BINARY_DIRS}
-        )
-     endif()
-else()
-    find_package(OpenCASCADE REQUIRED)
-    if(OpenCASCADE_FOUND)
-        # It seems that OpenCascade cmake package files specify INTERFACE_INCLUDE_DIRECTORIES
-        # starting from 7.7.0 version only
-        # Older versions require to explicitly add OpenCascade include dir
-        get_target_property(OpenCASCADE_TKernel_INCLUDE_DIR TKernel INTERFACE_INCLUDE_DIRECTORIES)
-        list(FIND OpenCASCADE_TKernel_INCLUDE_DIR ${OpenCASCADE_INCLUDE_DIR} OpenCASCADE_TKernel_INCLUDE_DIR_IsSet)
-        if(OpenCASCADE_TKernel_INCLUDE_DIR_IsSet EQUAL -1)
-            list(APPEND Mayo_IncludeDirectories ${OpenCASCADE_INCLUDE_DIR})
-        endif()
     endif()
 endif()
 

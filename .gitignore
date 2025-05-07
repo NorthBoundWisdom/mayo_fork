@@ -5,6 +5,8 @@ custom.pri
 env.pri
 cmake/CustomSteps.cmake
 build
-.vscode
 CMakePresets.json
 .clangd
+build
+.vscode
+
