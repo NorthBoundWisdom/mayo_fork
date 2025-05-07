@@ -5,6 +5,8 @@ jobs:
   first_job:
     name: My first job
     runs-on: ubuntu-latest
+    environment: ActionDemo
+      
 
     steps:
       - name: Great
