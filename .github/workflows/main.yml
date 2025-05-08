@@ -1,12 +1,15 @@
 name: My first workflow
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
-jobs: 
+jobs:
   first_job:
     name: My first job
     runs-on: ubuntu-latest
     environment: ActionDemo
-      
+
 
     steps:
       - name: Great
