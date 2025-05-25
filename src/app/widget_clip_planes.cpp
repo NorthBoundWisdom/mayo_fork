@@ -6,8 +6,6 @@
 
 #include "widget_clip_planes.h"
 
-#include <algorithm>
-
 #include <QtCore/QFile>
 
 #include <Bnd_Box.hxx>
@@ -18,12 +16,12 @@
 #include "base/bnd_utils.h"
 #include "base/math_utils.h"
 #include "base/settings.h"
-#include "base/tkernel_utils.h"
 #include "graphics/graphics_texture2d.h"
 #include "graphics/graphics_utils.h"
 
 #include "app_module.h"
 #include "ui_widget_clip_planes.h"
+
 
 namespace Mayo
 {

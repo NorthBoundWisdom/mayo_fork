@@ -6,19 +6,17 @@
 
 #pragma once
 
-// Base
-#include "occ_handle.h"
-class DocumentTreeNode;
-
-// OpenCascade
-#include <Quantity_Color.hxx>
-#include <Standard_Handle.hxx>
-class Poly_Triangulation;
-class TopLoc_Location;
-
-// CppStd
 #include <functional>
 #include <optional>
+
+#include <Quantity_Color.hxx>
+#include <Standard_Handle.hxx>
+
+#include "occ_handle.h"
+
+class DocumentTreeNode;
+class Poly_Triangulation;
+class TopLoc_Location;
 
 namespace Mayo
 {

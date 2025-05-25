@@ -12,7 +12,6 @@
 #include "base/document_ptr.h"
 #include "base/filepath.h"
 #include "base/property.h"
-#include "base/tkernel_utils.h"
 
 #include "iwidget_main_page.h"
 
@@ -38,7 +37,7 @@ class WidgetMainControl : public IWidgetMainPage
 
 public:
     WidgetMainControl(GuiApplication *guiApp, QWidget *parent = nullptr);
-    ~WidgetMainControl();
+    ~WidgetMainControl() override;
 
     void initialize(const CommandContainer *cmdContainer) override;
     void updatePageControlsActivation() override;

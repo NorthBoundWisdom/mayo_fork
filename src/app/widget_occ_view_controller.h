@@ -17,6 +17,7 @@
 #include "gui/v3d_view_controller.h"
 
 #include "view3d_navigation_style.h"
+
 class QCursor;
 class QKeyEvent;
 class QMouseEvent;

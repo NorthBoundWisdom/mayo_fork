@@ -18,13 +18,16 @@
 #endif
 
 #include <functional>
-#include <iomanip>
 #include <iostream>
+#include <set>
+#include <sstream>
 #include <stdexcept>
+#include <string_view>
 
 #include "base/filepath.h"
 
 #include "dxf.h"
+#include "freecad.h"
 
 namespace
 {

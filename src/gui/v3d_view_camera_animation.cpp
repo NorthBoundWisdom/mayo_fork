@@ -6,8 +6,6 @@
 
 #include "v3d_view_camera_animation.h"
 
-#include "base/unit_system.h"
-
 namespace Mayo
 {
 

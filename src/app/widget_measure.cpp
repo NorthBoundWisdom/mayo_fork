@@ -6,14 +6,11 @@
 
 #include "widget_measure.h"
 
-#include <cmath>
-#include <codecvt>
 #include <vector>
 
 #include <QtCore/QtDebug>
 #include <QtGui/QFontDatabase>
 
-#include "base/unit_system.h"
 #include "gui/gui_document.h"
 #include "measure/measure_tool_brep.h"
 #include "qtcommon/qstring_conv.h"

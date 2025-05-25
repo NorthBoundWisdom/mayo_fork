@@ -416,7 +416,6 @@ public:
     bool matchZoom() const override
     {
         return this->inputs.equal({Qt::Key_Shift, Qt::MiddleButton});
-        ;
     }
 
     bool matchWindowZoom() const override
@@ -446,7 +445,6 @@ public:
     bool matchZoom() const override
     {
         return this->inputs.equal({Qt::MiddleButton, Qt::LeftButton});
-        ;
     }
 
     bool matchWindowZoom() const override
@@ -476,7 +474,6 @@ public:
     bool matchZoom() const override
     {
         return this->inputs.equal({Qt::Key_Control, Qt::MiddleButton});
-        ;
     }
 
     bool matchWindowZoom() const override

@@ -11,13 +11,12 @@
 
 #include <QtGui/QResizeEvent>
 
+#include <Aspect_NeutralWindow.hxx>
+
 #include "base/occ_handle.h"
 
 #include "occt_window.h"
 #include "widget_occ_view.h"
-#if OCC_VERSION_HEX >= 0x070600
-#include <Aspect_NeutralWindow.hxx>
-#endif
 
 namespace Mayo
 {
@@ -39,8 +38,6 @@ IWidgetOccView *IWidgetOccView::create(const OccHandle<V3d_View> &view, QWidget 
     const auto &fn = getWidgetOccViewCreator();
     return fn(view, parent);
 }
-
-#if OCC_VERSION_HEX >= 0x070600
 
 // Defined in widget_occ_view.cpp
 bool QOpenGLWidgetOccView_isCoreProfile();
@@ -87,12 +84,7 @@ QOpenGLWidgetOccView::QOpenGLWidgetOccView(const OccHandle<V3d_View> &view, QWid
     glFormat.setProfile(QOpenGLWidgetOccView_isCoreProfile() ?
                             QSurfaceFormat::CoreProfile :
                             QSurfaceFormat::CompatibilityProfile);
-    // Use QtOccFrameBuffer fallback
-    // To request sRGBColorSpace colorspace to meet OCCT expectations then
-    // consider code below: #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    //     glFormat.setColorSpace(QSurfaceFormat::sRGBColorSpace);
-    //     this->setTextureFormat(GL_SRGB8_ALPHA8);
-    // #endif
+
     this->setFormat(glFormat);
 }
 
@@ -152,8 +144,6 @@ void QOpenGLWidgetOccView::paintGL()
     // this->v3dView()->InvalidateImmediate();
     this->v3dView()->Redraw();
 }
-
-#endif // OCC_VERSION_HEX >= 0x070600
 
 QWidgetOccView::QWidgetOccView(const OccHandle<V3d_View> &view, QWidget *parent)
     : QWidget(parent)

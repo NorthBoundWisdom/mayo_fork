@@ -8,19 +8,15 @@
 
 #include <fstream>
 #include <locale>
-#include <string>
 
 #include <Poly_Triangulation.hxx>
 
-#include "base/caf_utils.h"
-#include "base/document.h"
 #include "base/io_system.h"
-#include "base/label_data.h"
 #include "base/mesh_access.h"
 #include "base/messenger.h"
-#include "base/property_builtins.h"
 #include "base/task_progress.h"
 #include "base/text_id.h"
+
 
 namespace Mayo::IO
 {

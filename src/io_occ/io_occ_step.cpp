@@ -14,10 +14,7 @@
 #include <STEPCAFControl_Controller.hxx>
 #include <fmt/format.h>
 
-#include "base/enumeration_fromenum.h"
-#include "base/messenger.h"
 #include "base/meta_enum.h"
-#include "base/occ_handle.h"
 #include "base/occ_static_variables_rollback.h"
 #include "base/property_builtins.h"
 #include "base/property_enumeration.h"
@@ -26,6 +23,7 @@
 #include "base/tkernel_utils.h"
 
 #include "io_occ_caf.h"
+
 
 namespace Mayo::IO
 {

@@ -8,9 +8,7 @@
 
 #include <stdexcept>
 #include <string>
-#include <utility>
 #ifndef __cpp_lib_integer_comparison_functions
-#include <exception>
 #include <limits>
 #include <type_traits>
 #endif

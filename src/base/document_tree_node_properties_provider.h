@@ -24,5 +24,4 @@ public:
     virtual std::unique_ptr<PropertyGroupSignals>
     properties(const DocumentTreeNode &treeNode) const = 0;
 };
-
 } // namespace Mayo

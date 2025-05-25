@@ -13,9 +13,8 @@
 #include <V3d_DirectionalLight.hxx>
 #include <V3d_TypeOfOrientation.hxx>
 
-#include "base/tkernel_utils.h"
-
 #include "graphics_utils.h"
+
 
 namespace Mayo
 {
@@ -79,11 +78,6 @@ public:
     InteractiveContext(const OccHandle<V3d_Viewer> &viewer)
         : AIS_InteractiveContext(viewer)
     {
-    }
-
-    constexpr const GraphicsOwnerPtr &member_myLastPicked() const
-    {
-        return myLastPicked;
     }
 
     int defaultDisplayMode(const GraphicsObjectPtr &object) const
@@ -337,19 +331,11 @@ void GraphicsScene::select()
 
     if (d->m_selectionMode == SelectionMode::Single)
     {
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 6, 0)
         d->m_aisContext->SelectDetected(AIS_SelectionScheme_Replace);
-#else
-        d->m_aisContext->Select(false);
-#endif
     }
     else if (d->m_selectionMode == SelectionMode::Multi)
     {
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 6, 0)
         d->m_aisContext->SelectDetected(AIS_SelectionScheme_XOR);
-#else
-        d->m_aisContext->ShiftSelect(false);
-#endif
     }
 
     this->signalSelectionChanged.send();
@@ -362,11 +348,7 @@ int GraphicsScene::selectedCount() const
 
 const GraphicsOwnerPtr &GraphicsScene::currentHighlightedOwner() const
 {
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
     return d->m_aisContext->DetectedOwner();
-#else
-    return d->m_aisContext->member_myLastPicked();
-#endif
 }
 
 GraphicsScene::SelectionMode GraphicsScene::selectionMode() const

@@ -104,7 +104,7 @@ public: // -- from TDocStd_Document
 
 private:
     Document(const ApplicationPtr &app);
-    ~Document();
+    ~Document() override;
 
     friend class Application;
     class FormatBinaryRetrievalDriver;

@@ -49,11 +49,10 @@
 #include "base/property_enumeration.h"
 #include "base/string_conv.h"
 #include "base/task_progress.h"
-#include "base/tkernel_utils.h"
-#include "base/unit_system.h"
 
 #include "aci_table.h"
 #include "dxf.h"
+
 
 #define MAYO_IO_DXF_DEBUG_TRACE 1
 

@@ -9,14 +9,12 @@
 
 #include <fmt/format.h>
 
-#include "base/application.h"
 #include "base/caf_utils.h"
 #include "base/document.h"
 #include "base/property_enumeration.h"
 #include "base/settings.h"
 #include "base/xcaf.h"
 #include "graphics/graphics_shape_object_driver.h"
-#include "gui/gui_application.h"
 #include "qtcommon/qstring_conv.h"
 #include "qtcommon/qtcore_utils.h"
 

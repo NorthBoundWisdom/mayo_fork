@@ -17,7 +17,6 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QToolButton>
 
-#include "base/application.h"
 #include "base/property_builtins.h"
 #include "base/property_enumeration.h"
 #include "base/unit_system.h"

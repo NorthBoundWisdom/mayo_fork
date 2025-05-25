@@ -12,15 +12,12 @@
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QWidget>
 
-#include "base/application.h"
 #include "base/property_builtins.h"
-#include "base/settings.h"
 #include "base/unit_system.h"
 #include "qtcommon/filepath_conv.h"
 #include "qtcommon/qstring_conv.h"
 
 #include "app_module.h"
-#include "qmeta_property.h"
 #include "qstring_utils.h"
 #include "qtgui_utils.h"
 #include "theme.h"

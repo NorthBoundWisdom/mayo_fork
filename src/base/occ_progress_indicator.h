@@ -24,11 +24,7 @@ public:
 
     bool UserBreak() override;
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 5, 0)
     void Show(const Message_ProgressScope &theScope, const bool isForce) override;
-#else
-    bool Show(const bool force) override;
-#endif
 
 private:
     TaskProgress *m_progress = nullptr;

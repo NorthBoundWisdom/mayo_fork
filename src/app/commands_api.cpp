@@ -6,14 +6,13 @@
 
 #include "commands_api.h"
 
-#include <exception>
-
 #include <QtWidgets/QWidget>
 
 #include <fmt/format.h>
 
 #include "base/application.h"
 #include "gui/gui_application.h"
+
 
 namespace Mayo
 {

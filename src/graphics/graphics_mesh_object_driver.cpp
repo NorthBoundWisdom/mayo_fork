@@ -15,7 +15,6 @@
 #include <MeshVS_MeshPrsBuilder.hxx>
 #include <MeshVS_NodalColorPrsBuilder.hxx>
 
-#include "base/brep_utils.h"
 #include "base/caf_utils.h"
 #include "base/cpp_utils.h"
 #include "base/label_data.h"

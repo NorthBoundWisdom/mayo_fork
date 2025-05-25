@@ -9,7 +9,6 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QFileInfo>
 
-#include "base/application.h"
 #include "qtcommon/filepath_conv.h"
 #include "qtcommon/qstring_conv.h"
 

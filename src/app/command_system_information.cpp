@@ -5,9 +5,7 @@
 ****************************************************************************/
 
 #include <common/mayo_version.h>
-#include <stdexcept>
 #include <thread>
-#include <vector>
 
 #include <QtCore/QDir>
 #include <QtCore/QFileSelector>
@@ -61,7 +59,7 @@ void CommandSystemInformation::execute()
 
     auto dlg = new QDialog(this->widgetMain());
     dlg->setWindowTitle(this->action()->text());
-    dlg->resize(800 * dlg->devicePixelRatioF(), 600 * dlg->devicePixelRatioF());
+    dlg->resize(800 * int(dlg->devicePixelRatioF()), 600 * int(dlg->devicePixelRatioF()));
 
     auto textEdit = new QPlainTextEdit(dlg);
     textEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
@@ -350,7 +348,7 @@ QString CommandSystemInformation::data()
     {
         const auto pwdChar = sh->passwordMaskCharacter();
         ostr << indent << "styleHints:\n"
-             << indentx2 << "keyboardAutoRepeatRate: " << sh->keyboardAutoRepeatRate() << '\n'
+             << indentx2 << "keyboardAutoRepeatRateF: " << sh->keyboardAutoRepeatRateF() << '\n'
              << indentx2 << "keyboardInputInterval: " << sh->keyboardInputInterval() << '\n'
              << indentx2 << "mouseDoubleClickInterval: " << sh->mouseDoubleClickInterval() << '\n'
              << indentx2 << "mousePressAndHoldInterval: " << sh->mousePressAndHoldInterval() << '\n'
@@ -384,8 +382,7 @@ QString CommandSystemInformation::data()
     {
         auto fnLibInfo = [&](QLibraryInfo::LibraryLocation loc)
         {
-            const QString locDir =
-                QDir::toNativeSeparators(QLibraryInfo::QLibraryInfo::location(loc));
+            const QString locDir = QDir::toNativeSeparators(QLibraryInfo::QLibraryInfo::path(loc));
             ostr << indent << MetaEnum::name(loc) << ": " << locDir << '\n';
         };
         fnLibInfo(QLibraryInfo::PrefixPath);

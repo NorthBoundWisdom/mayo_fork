@@ -15,7 +15,6 @@
 #include <QtWidgets/QStyleFactory>
 
 #include "base/meta_enum.h"
-#include "base/span.h"
 
 namespace Mayo
 {

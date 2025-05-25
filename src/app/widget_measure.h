@@ -7,8 +7,6 @@
 #pragma once
 
 #include <memory>
-#include <string>
-#include <string_view>
 #include <vector>
 
 #include <QtWidgets/QWidget>
@@ -30,7 +28,7 @@ class WidgetMeasure : public QWidget
 
 public:
     WidgetMeasure(GuiDocument *guiDoc, QWidget *parent = nullptr);
-    ~WidgetMeasure();
+    ~WidgetMeasure() override;
 
     void setMeasureOn(bool on);
 

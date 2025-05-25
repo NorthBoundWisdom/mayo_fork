@@ -26,7 +26,6 @@
 #include "gui/gui_application.h"
 #include "gui/gui_document.h"
 #include "qtcommon/filepath_conv.h"
-#include "qtcommon/qstring_conv.h"
 #include "qtcommon/qtcore_utils.h"
 
 namespace Mayo

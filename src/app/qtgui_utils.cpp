@@ -7,7 +7,6 @@
 #include "qtgui_utils.h"
 
 #include <algorithm>
-#include <cmath>
 #include <gsl/assert>
 
 #include <QtCore/QBuffer>

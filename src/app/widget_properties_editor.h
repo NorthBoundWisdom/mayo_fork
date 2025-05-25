@@ -10,7 +10,6 @@
 
 #include "base/property.h"
 #include "base/span.h"
-#include "base/unit.h"
 
 #include "property_item_delegate.h"
 
@@ -21,7 +20,7 @@ class WidgetPropertiesEditor : public QWidget
 {
 public:
     WidgetPropertiesEditor(QWidget *parent = nullptr);
-    ~WidgetPropertiesEditor();
+    ~WidgetPropertiesEditor() override;
 
     struct Group;
     Group *addGroup(const QString &name);

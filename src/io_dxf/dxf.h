@@ -7,21 +7,11 @@
 
 #pragma once
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
 #include <fstream>
 #include <iosfwd>
-#include <optional>
-#include <set>
-#include <sstream>
 #include <string>
-#include <string_view>
 #include <unordered_map>
 #include <vector>
-
-#include "freecad.h"
 
 typedef int ColorIndex_t; // DXF color index
 
@@ -512,7 +502,7 @@ protected:
     int m_blockHandle;
     int m_blkRecordHandle;
     bool m_polyOverride;
-    
+
     std::string m_saveModelSpaceHandle;
     std::string m_savePaperSpaceHandle;
     std::string m_saveBlockRecordTableHandle;
@@ -527,7 +517,7 @@ protected:
 public:
     CDxfWrite(const char* filepath);
     ~CDxfWrite();
-    
+
     void init();
     void endRun();
 

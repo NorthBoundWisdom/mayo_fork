@@ -18,18 +18,14 @@
 #include <gmio_amf/amf_io.h>
 #include <gp_Quaternion.hxx>
 
-#include "base/application_item.h"
 #include "base/brep_utils.h"
 #include "base/caf_utils.h"
 #include "base/cpp_utils.h"
-#include "base/math_utils.h"
 #include "base/mesh_access.h"
-#include "base/meta_enum.h"
 #include "base/property_builtins.h"
 #include "base/property_enumeration.h"
 #include "base/string_conv.h"
 #include "base/task_progress.h"
-#include "base/triangulation_annex_data.h"
 #include "base/unit_system.h"
 #include "base/xcaf.h"
 

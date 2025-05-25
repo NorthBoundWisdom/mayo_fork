@@ -6,7 +6,7 @@
 
 #include "commands_display.h"
 
-#include <QActionGroup> // WARNING Qt5 <QtWidgets/...> / Qt6 <QtGui/...>
+#include <QActionGroup>
 #include <QtCore/QSignalBlocker>
 #include <QtWidgets/QMenu>
 
@@ -14,7 +14,6 @@
 
 #include "base/application.h"
 #include "base/cpp_utils.h"
-#include "base/unit_system.h"
 #include "gui/gui_application.h"
 #include "gui/gui_document.h"
 #include "gui/v3d_view_controller.h"

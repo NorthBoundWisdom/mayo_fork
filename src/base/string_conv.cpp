@@ -13,7 +13,6 @@
 #include <locale.h>
 #endif
 
-#include <algorithm>
 #include <gsl/util>
 #include <sstream>
 #include <vector>

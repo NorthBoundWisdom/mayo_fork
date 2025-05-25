@@ -16,8 +16,6 @@
 
 #include <Standard_Version.hxx>
 
-#include "base/cpp_utils.h"
-#include "base/unit_system.h"
 #include "graphics/graphics_utils.h"
 #include "gui/gui_document.h"
 #include "gui/v3d_view_camera_animation.h"

@@ -6,9 +6,12 @@
 
 #include "mesh_access.h"
 
+#include <optional>
+
 #include <BRep_Tool.hxx>
 #include <Standard_Version.hxx>
 #include <TopoDS_Face.hxx>
+#include <XCAFDoc_VisMaterial.hxx>
 
 #include "brep_utils.h"
 #include "caf_utils.h"
@@ -16,11 +19,7 @@
 #include "document.h"
 #include "document_tree_node.h"
 #include "triangulation_annex_data.h"
-#if OCC_VERSION_HEX >= 0x070500
-#include <XCAFDoc_VisMaterial.hxx>
-#endif
 
-#include <optional>
 
 namespace Mayo
 {

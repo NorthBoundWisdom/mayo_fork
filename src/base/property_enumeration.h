@@ -13,13 +13,6 @@
 #include "enumeration_fromenum.h"
 #include "property.h"
 
-// Silent GCC warnings about PropertyEnum<>::m_enum being initialized before
-// PropertyEnumeration attributes
-#ifdef Q_CC_GNU
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wreorder"
-#endif
-
 namespace Mayo
 {
 

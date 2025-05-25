@@ -11,6 +11,7 @@
 #include <Standard_Version.hxx>
 
 #include "occ_handle.h"
+
 class gp_XYZ;
 
 namespace Mayo
@@ -26,11 +27,7 @@ double triangleArea(const gp_XYZ &p1, const gp_XYZ &p2, const gp_XYZ &p3);
 double triangulationVolume(const OccHandle<Poly_Triangulation> &triangulation);
 double triangulationArea(const OccHandle<Poly_Triangulation> &triangulation);
 
-#if OCC_VERSION_HEX >= 0x070600
 using Poly_Triangulation_NormalType = gp_Vec3f;
-#else
-using Poly_Triangulation_NormalType = gp_Vec;
-#endif
 
 void setNode(const OccHandle<Poly_Triangulation> &triangulation, int index, const gp_Pnt &pnt);
 void setNormal(const OccHandle<Poly_Triangulation> &triangulation, int index,

@@ -10,7 +10,6 @@
 #include <QtWidgets/QWidget>
 
 #include "base/application.h"
-#include "gui/gui_application.h"
 
 #include "theme.h"
 

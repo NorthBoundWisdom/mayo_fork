@@ -24,7 +24,7 @@ class Application : public XCAFApp_Application
 {
 public:
     Application();
-    ~Application();
+    ~Application() override;
 
     // Iterator over Documents contained in an Application
     struct DocumentIterator : private CDF_DirectoryIterator

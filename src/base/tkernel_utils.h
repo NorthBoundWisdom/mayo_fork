@@ -18,11 +18,7 @@
 #define OCC_VERSION_CHECK(major, minor, patch) ((major << 16) | (minor << 8) | (patch))
 #endif
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 5, 0)
 #include <Message_ProgressRange.hxx>
-#else
-class Message_ProgressIndicator;
-#endif
 
 namespace Mayo
 {

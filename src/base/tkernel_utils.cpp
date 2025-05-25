@@ -16,21 +16,11 @@ namespace Mayo
 TKernelUtils::ReturnType_StartProgressIndicator
 TKernelUtils::start(const OccHandle<Message_ProgressIndicator> &progress)
 {
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 5, 0)
     return Message_ProgressIndicator::Start(progress);
-#else
-    return progress;
-#endif
 }
 
 std::string TKernelUtils::colorToHex(const Quantity_Color &color)
 {
-    // #if OCC_VERSION_HEX >= 0x070400
-    //     constexpr bool hashPrefix = true;
-    //     return to_QString(Quantity_Color::ColorToHex(this->value(),
-    //     hashPrefix));
-    // #endif
-
     // Converts a decimal digit to hexadecimal character
     auto fnHexDigit = [](uint8_t v)
     {

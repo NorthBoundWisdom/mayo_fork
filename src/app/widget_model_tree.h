@@ -7,17 +7,16 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 
 #include <QtWidgets/QWidget>
 
 #include "base/application_item.h"
-#include "base/property.h"
 #include "gui/gui_document.h"
+
 class QItemSelection;
 class QTreeWidget;
 class QTreeWidgetItem;
-
-#include <memory>
 
 namespace Mayo
 {
@@ -41,7 +40,7 @@ public:
     using BuilderPtr = std::unique_ptr<WidgetModelTreeBuilder>;
 
     WidgetModelTree(QWidget *widget = nullptr);
-    ~WidgetModelTree();
+    ~WidgetModelTree() override;
 
     void refreshItemText(const ApplicationItem &appItem);
 

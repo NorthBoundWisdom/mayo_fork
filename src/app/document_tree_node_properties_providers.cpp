@@ -19,7 +19,6 @@
 #include "base/mesh_utils.h"
 #include "base/meta_enum.h"
 #include "base/point_cloud_data.h"
-#include "base/triangulation_annex_data.h"
 #include "base/xcaf.h"
 #include "graphics/graphics_mesh_object_driver.h"
 #include "graphics/graphics_point_cloud_object_driver.h"

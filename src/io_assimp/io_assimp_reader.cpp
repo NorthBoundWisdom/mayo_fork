@@ -36,7 +36,6 @@
 #include "base/property.h"
 #include "base/string_conv.h"
 #include "base/task_progress.h"
-#include "base/tkernel_utils.h"
 #include "base/xcaf.h"
 
 // #define MAYO_ASSIMP_READER_HANDLE_SCALING 1
@@ -62,12 +61,14 @@ aiVector3D aiMatrixScaling(const aiMatrix4x4 &trsf)
     return scaling;
 }
 
+#ifdef MAYO_ASSIMP_READER_HANDLE_SCALING
 bool hasScaleFactor(const aiVector3D &scaling)
 {
     return (!MathUtils::fuzzyEqual(scaling.x, 1) || !MathUtils::fuzzyEqual(scaling.y, 1) ||
-            !MathUtils::fuzzyEqual(scaling.z, 1) || scaling.x < 0. || scaling.y < 0. ||
-            scaling.z < 0.);
+            !MathUtils::fuzzyEqual(scaling.z, 1) || scaling.x < 0.f || scaling.y < 0.f ||
+            scaling.z < 0.f);
 }
+#endif
 
 // Visit each node in Assimp tree and call 'fnCallback'
 void deep_aiNodeVisit(const aiNode *node, const std::function<void(const aiNode *)> &fnPreCallback,

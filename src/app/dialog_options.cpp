@@ -18,8 +18,6 @@
 #include <QtWidgets/QPushButton>
 
 #include "base/cpp_utils.h"
-#include "base/property_builtins.h"
-#include "base/property_enumeration.h"
 #include "base/settings.h"
 #include "qtbackend/qsettings_storage.h"
 #include "qtcommon/qstring_conv.h"

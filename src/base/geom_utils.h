@@ -10,6 +10,7 @@
 
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
+
 class Adaptor3d_Curve;
 class gp_Trsf;
 

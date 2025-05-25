@@ -4,24 +4,21 @@
 ** See license at https://github.com/fougue/mayo/blob/master/LICENSE.txt
 ****************************************************************************/
 
+#include <functional>
+
 #include <Aspect_DisplayConnection.hxx>
+#include <Aspect_NeutralWindow.hxx>
+#include <OpenGl_Context.hxx>
+#include <OpenGl_FrameBuffer.hxx>
 #include <OpenGl_GraphicDriver.hxx>
 #include <Standard_Version.hxx>
 
 #include "base/occ_handle.h"
 #include "graphics/graphics_utils.h"
-#if OCC_VERSION_HEX >= 0x070600
-#include <Aspect_NeutralWindow.hxx>
-#include <OpenGl_Context.hxx>
-#include <OpenGl_FrameBuffer.hxx>
-#endif
-
-#include <functional>
 
 namespace Mayo
 {
 
-#if OCC_VERSION_HEX >= 0x070600
 namespace
 {
 
@@ -130,8 +127,6 @@ Graphic3d_Vec2i QOpenGLWidgetOccView_getDefaultframeBufferViewportSize(
     auto driver = OccHandle<OpenGl_GraphicDriver>::DownCast(gfxDriver);
     return driver->GetSharedContext()->DefaultFrameBuffer()->GetVPSize();
 }
-
-#endif // OCC_VERSION_HEX >= 0x070600
 
 OccHandle<Graphic3d_GraphicDriver> QWidgetOccView_createCompatibleGraphicsDriver()
 {

@@ -6,7 +6,15 @@
 
 #include "dialog_inspect_xde.h"
 
+#include <algorithm>
+#include <sstream>
+#include <unordered_map>
+
+#include <QtCore/QBuffer>
+#include <QtCore/QFileInfo>
+
 #include <Image_AlienPixMap.hxx>
+#include <Image_Texture.hxx>
 #include <TDF_AttributeIterator.hxx>
 #include <TDF_ChildIterator.hxx>
 #include <TDF_LabelSequence.hxx>
@@ -30,42 +38,26 @@
 #include <XCAFDoc_Location.hxx>
 #include <XCAFDoc_MaterialTool.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
+#include <XCAFDoc_VisMaterial.hxx>
+#include <XCAFDoc_VisMaterialCommon.hxx>
+#include <XCAFDoc_VisMaterialTool.hxx>
 #include <XCAFDoc_Volume.hxx>
 
-#include "base/application.h"
 #include "base/brep_utils.h"
 #include "base/caf_utils.h"
 #include "base/cpp_utils.h"
 #include "base/meta_enum.h"
 #include "base/occ_handle.h"
-#include "base/settings.h"
 #include "base/tkernel_utils.h"
 #include "qtcommon/filepath_conv.h"
 #include "qtcommon/qstring_conv.h"
 
 #include "app_module.h"
-#include "qmeta_tdf_label.h"
 #include "qstring_utils.h"
 #include "qtgui_utils.h"
 #include "qtwidgets_utils.h"
 #include "ui_dialog_inspect_xde.h"
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
-#include <Image_Texture.hxx>
-#endif
-
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 5, 0)
-#include <XCAFDoc_VisMaterial.hxx>
-#include <XCAFDoc_VisMaterialCommon.hxx>
-#include <XCAFDoc_VisMaterialTool.hxx>
-#endif
-
-#include <algorithm>
-#include <sstream>
-#include <unordered_map>
-
-#include <QtCore/QBuffer>
-#include <QtCore/QFileInfo>
 
 namespace Mayo
 {

@@ -8,7 +8,6 @@
 
 #include <algorithm>
 
-#include "string_conv.h"
 #include "task_progress.h"
 
 namespace Mayo

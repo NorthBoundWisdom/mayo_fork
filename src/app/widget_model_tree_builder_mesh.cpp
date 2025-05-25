@@ -8,7 +8,6 @@
 
 #include <QtWidgets/QTreeWidgetItem>
 
-#include "base/caf_utils.h"
 #include "graphics/graphics_mesh_object_driver.h"
 
 #include "theme.h"

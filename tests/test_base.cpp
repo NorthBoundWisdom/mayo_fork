@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <cassert>
 #include <climits>
-#include <clocale>
 #include <cmath>
 #include <common/mayo_config.h>
 #include <cstring>
@@ -22,11 +21,9 @@
 #include <gsl/util>
 #include <iostream>
 #include <memory>
-#include <sstream>
 #include <string>
 #include <type_traits>
 #include <unordered_map>
-#include <utility>
 #include <variant>
 #include <vector>
 

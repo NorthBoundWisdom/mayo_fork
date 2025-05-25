@@ -6,7 +6,7 @@
 
 #include "button_flat.h"
 
-#include <QAction> // WARNING Qt5 <QtWidgets/...> / Qt6 <QtGui/...>
+#include <QAction>
 #include <QtCore/QSignalBlocker>
 #include <QtCore/QtDebug>
 #include <QtGui/QCursor>

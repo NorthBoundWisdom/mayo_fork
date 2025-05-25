@@ -19,7 +19,7 @@ class WidgetMainHome : public IWidgetMainPage
 
 public:
     WidgetMainHome(QWidget *parent = nullptr);
-    ~WidgetMainHome();
+    ~WidgetMainHome() override;
 
     void initialize(const CommandContainer *cmdContainer) override;
     void updatePageControlsActivation() override;
