@@ -7,7 +7,6 @@
 #pragma once
 
 #include <cassert>
-#include <climits>
 #include <gsl/span>
 
 namespace Mayo

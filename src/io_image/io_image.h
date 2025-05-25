@@ -15,9 +15,7 @@
 #include <gp_Dir.hxx>
 
 #include "base/application_item.h"
-#include "base/caf_utils.h"
 #include "base/io_writer.h"
-#include "base/tkernel_utils.h"
 
 // Pre-decls
 namespace Mayo

@@ -8,7 +8,6 @@
 
 #include <gsl/util>
 #include <limits>
-#include <unordered_set>
 
 #include <Aspect_Window.hxx>
 #include <Graphic3d_GraphicDriver.hxx>
@@ -16,7 +15,6 @@
 #include <V3d_View.hxx>
 
 #include "base/application_item.h"
-#include "base/caf_utils.h"
 #include "base/cpp_utils.h"
 #include "base/document.h"
 #include "base/filepath_conv.h"
@@ -27,7 +25,6 @@
 #include "base/property_builtins.h"
 #include "base/property_enumeration.h"
 #include "base/task_progress.h"
-#include "base/tkernel_utils.h"
 #include "graphics/graphics_scene.h"
 #include "graphics/graphics_utils.h"
 #include "gui/gui_application.h"

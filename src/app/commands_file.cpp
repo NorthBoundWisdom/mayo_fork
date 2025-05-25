@@ -183,7 +183,7 @@ void FileCommandTools::openDocumentsFromList(IAppContext *context,
         if (docPtr.IsNull())
         {
             docPtr = app->newDocument();
-            docPtr->setName(fp.filename().u8string());
+            docPtr->setName(fp.filename().string());
             docPtr->setFilePath(fp);
             // Use the Document identifier instead of handle within the job
             // function(capture) Using the handle increases the ref count and the task
@@ -214,7 +214,7 @@ void FileCommandTools::openDocumentsFromList(IAppContext *context,
                         appModule->emitInfo(
                             fmt::format(Command::textIdTr("Import time: {}ms"), chrono.elapsed()));
                 });
-            context->taskMgr()->setTitle(taskId, fp.stem().u8string());
+            context->taskMgr()->setTitle(taskId, fp.stem().string());
             context->taskMgr()->run(taskId);
             appModule->prependRecentFile(fp);
         }

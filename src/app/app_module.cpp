@@ -295,7 +295,7 @@ void AppModule::recordRecentFile(GuiDocument *guiDoc)
     {
         qDebug() << fmt::format("RecentFile object is null\n"
                                 "    Function: {}\n    Document: {}\n    RecentFilesCount: {}",
-                                Q_FUNC_INFO, guiDoc->document()->filePath().u8string(),
+                                Q_FUNC_INFO, guiDoc->document()->filePath().string(),
                                 m_props.recentFiles.value().size())
                         .c_str();
         return;
@@ -487,8 +487,8 @@ bool AppModule::impl_recordRecentFile(RecentFile *recentFile, GuiDocument *guiDo
     {
         qDebug() << fmt::format("Filepath mismatch with GUI document\n"
                                 "    Function: {}\n    Filepath: {}\n    Document: {}",
-                                Q_FUNC_INFO, recentFile->filepath.u8string(),
-                                guiDoc->document()->filePath().u8string())
+                                Q_FUNC_INFO, recentFile->filepath.string(),
+                                guiDoc->document()->filePath().string())
                         .c_str();
         return false;
     }

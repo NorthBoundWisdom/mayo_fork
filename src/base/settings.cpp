@@ -6,11 +6,11 @@
 
 #include "settings.h"
 
-#include <gsl/util>
 #include <iostream>
-#include <regex>
 
 #include <fmt/format.h>
+
+#include "base/text_id.h"
 
 namespace Mayo
 {
@@ -113,6 +113,7 @@ public:
         const std::string settingPath = std::string(sectionPath).append("/").append(propertyKey);
         if (source.contains(settingPath))
         {
+            std::cout << "load Property From: " << settingPath << std::endl;
             const Settings::Variant value = source.value(settingPath);
             const bool ok = m_propValueConverter->fromVariant(property, value);
             if (!ok)
@@ -217,6 +218,8 @@ void Settings::saveAs(Storage *target, const ExcludePropertyPredicate &fnExclude
         for (const Settings_Section &section : group.vecSection)
         {
             const std::string sectionPath = d->sectionPath(group, section);
+            std::cout << "config file save at: " << sectionPath << std::endl;
+
             for (const Settings_Setting &setting : section.vecSetting)
             {
                 Property *prop = setting.property;
@@ -390,7 +393,8 @@ Settings::SettingIndex Settings::addSetting(Property *property, GroupIndex group
     Settings_Section *sectionDefault = nullptr;
     if (group.vecSection.empty())
     {
-        const SectionIndex sectionId = this->addSection(groupId, {"Mayo::Settings", "DEFAULT"});
+        const SectionIndex sectionId =
+            this->addSection(groupId, TextId{"Mayo::Settings", "DEFAULT"});
         sectionDefault = &d->section(sectionId);
     }
     else
