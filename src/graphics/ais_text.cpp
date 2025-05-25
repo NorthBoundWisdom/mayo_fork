@@ -6,6 +6,8 @@
 
 #include "ais_text.h"
 
+#include <vector>
+
 #include <Graphic3d_AspectText3d.hxx>
 #include <OSD_Environment.hxx>
 #include <Prs3d_Root.hxx>
@@ -23,12 +25,6 @@
 #include <TCollection_AsciiString.hxx>
 #include <gp_Pnt.hxx>
 
-#if OCC_VERSION_HEX < 0x070600
-#include <Quantity_Factor.hxx>
-#include <Quantity_PlaneAngle.hxx>
-#endif
-
-#include <vector>
 
 namespace Mayo
 {

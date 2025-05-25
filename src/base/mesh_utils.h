@@ -100,10 +100,7 @@ public:
 private:
     bool m_isFinalized = false;
     OccHandle<Poly_Polygon3D> m_polygon;
-#if OCC_VERSION_HEX < 0x070500
-    TColgp_Array1OfPnt m_nodes;
-    TColStd_Array1OfReal m_params;
-#endif
+
     TColgp_Array1OfPnt *m_ptrNodes = nullptr;
     TColStd_Array1OfReal *m_ptrParams = nullptr;
 };

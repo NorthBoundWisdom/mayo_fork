@@ -17,12 +17,8 @@ namespace Mayo
 OccProgressIndicator::OccProgressIndicator(TaskProgress *progress)
     : m_progress(progress)
 {
-#if OCC_VERSION_HEX < OCC_VERSION_CHECK(7, 5, 0)
-    this->SetScale(0., 100., 1.);
-#endif
 }
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 5, 0)
 void OccProgressIndicator::Show(const Message_ProgressScope &scope, const bool isForce)
 {
     if (m_progress)
@@ -42,19 +38,6 @@ void OccProgressIndicator::Show(const Message_ProgressScope &scope, const bool i
         }
     }
 }
-#else
-bool OccProgressIndicator::Show(const bool /*force*/)
-{
-    if (m_progress)
-    {
-        m_progress->setStep(to_stdStringView(this->GetScope(1).GetName()));
-        const double pc = this->GetPosition(); // Always within [0,1]
-        m_progress->setValue(pc * 100);
-    }
-
-    return true;
-}
-#endif
 
 bool OccProgressIndicator::UserBreak()
 {

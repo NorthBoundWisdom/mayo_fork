@@ -48,14 +48,8 @@ TDF_LabelSequence cafGenericReadTransfer(CafReaderType &reader, DocumentPtr doc,
     auto indicator = makeOccHandle<OccProgressIndicator>(progress);
     const TDF_LabelSequence seqMark = doc->xcaf().topLevelFreeShapes();
     OccHandle<TDocStd_Document> stdDoc = doc;
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 5, 0)
     const bool okTransfer = reader.Transfer(stdDoc, indicator->Start());
-#else
-    OccHandle<XSControl_WorkSession> ws = Private::cafWorkSession(reader);
-    ws->MapReader()->SetProgress(indicator);
-    auto _ = gsl::finally([&] { ws->MapReader()->SetProgress(nullptr); });
-    const bool okTransfer = reader.Transfer(stdDoc);
-#endif
+
     MAYO_UNUSED(okTransfer);
     return doc->xcaf().diffTopLevelFreeShapes(seqMark);
 }
@@ -65,10 +59,6 @@ bool cafGenericWriteTransfer(CafWriterType &writer, Span<const ApplicationItem> 
                              TaskProgress *progress)
 {
     auto indicator = makeOccHandle<OccProgressIndicator>(progress);
-#if OCC_VERSION_HEX < OCC_VERSION_CHECK(7, 5, 0)
-    Private::cafFinderProcess(writer)->SetProgress(indicator);
-    auto _ = gsl::finally([&] { Private::cafFinderProcess(writer)->SetProgress(nullptr); });
-#endif
 
     bool okTransfer = true;
     System::visitUniqueItems(appItems,

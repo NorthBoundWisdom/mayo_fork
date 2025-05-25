@@ -564,6 +564,19 @@ if(Mayo_BuildApp)
             MACOSX_BUNDLE TRUE
     )
 
+    if(WIN32)
+        # 创建手动部署 Qt 依赖的目标
+        add_custom_target(Assemble_Qt_mayo
+        COMMENT "Deploying Qt dependencies using qt6"
+        COMMAND "${WINDEPLOYQT_EXECUTABLE}"
+            --verbose 0
+            --qmldir ${CMAKE_SOURCE_DIR}/src/app
+            --no-translations --compiler-runtime
+            \"$<TARGET_FILE:mayo>\"
+        COMMENT "Deploying Qt dependencies..."
+        )
+    endif()
+
     if(Mayo_PostBuildCopyRuntimeDLLs)
         # Copy required Qt plugins
         set(QtPluginsDir "${QT_DIR}/plugins")

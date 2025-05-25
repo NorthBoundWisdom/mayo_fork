@@ -155,13 +155,7 @@ Poly_Triangulation_NormalType normal(const OccHandle<Poly_Triangulation> &triang
 
 const Poly_Array1OfTriangle &triangles(const OccHandle<Poly_Triangulation> &triangulation)
 {
-#if OCC_VERSION_HEX < 0x070600
-    return triangulation->Triangles();
-#else
-    // Note: Poly_Triangulation::Triangles() was deprecated starting from
-    // OpenCascade v7.6.0
     return triangulation->InternalTriangles();
-#endif
 }
 
 // Adapted from http://cs.smith.edu/~jorourke/Code/polyorient.C
@@ -284,12 +278,6 @@ void Polygon3dBuilder::finalize()
     if (m_isFinalized)
         return;
 
-#if OCC_VERSION_HEX < 0x070500
-    if (m_ptrParams)
-        m_polygon = new Poly_Polygon3D(m_nodes, m_params);
-    else
-        m_polygon = new Poly_Polygon3D(m_nodes);
-#endif
     m_isFinalized = true;
 }
 

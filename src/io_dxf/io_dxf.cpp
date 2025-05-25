@@ -366,7 +366,6 @@ bool DxfReader::Internal::setSourceEncoding(const std::string &codepage)
 {
     std::optional<Resource_FormatType> encoding;
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
     if (codepage == "UTF8")
         encoding = Resource_FormatType_UTF8;
     else if (codepage == "ANSI_932") // Japanese
@@ -375,11 +374,6 @@ bool DxfReader::Internal::setSourceEncoding(const std::string &codepage)
         encoding = Resource_FormatType_GB;
     else if (codepage == "ANSI_949") // Korean
         encoding = Resource_FormatType_EUC;
-#endif
-
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 5, 0)
-    if (encoding)
-        ;                            // Encoding already found above
     else if (codepage == "ANSI_936") // UnifiedChinese
         encoding = Resource_FormatType_GBK;
     else if (codepage == "ANSI_950") // TradChinese
@@ -402,14 +396,8 @@ bool DxfReader::Internal::setSourceEncoding(const std::string &codepage)
         encoding = Resource_FormatType_CP1257;
     else if (codepage == "ANSI_1258")
         encoding = Resource_FormatType_CP1258;
-#endif
-
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 6, 0)
-    if (encoding)
-        ; // Encoding already found above
     else if (codepage == "ANSI_850" || codepage == "DOS850")
         encoding = Resource_FormatType_CP850;
-#endif
 
     if (encoding)
     {
@@ -429,16 +417,12 @@ std::string DxfReader::Internal::toUtf8(const std::string &strSource)
     if (m_srcEncoding == Resource_ANSI) // Resource_ANSI is a pass-through(OpenCascade)
         return strSource;
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
     if (m_srcEncoding == Resource_FormatType_UTF8)
         return strSource;
 
     TCollection_ExtendedString extStr;
     Resource_Unicode::ConvertFormatToUnicode(m_srcEncoding, strSource.c_str(), extStr);
     return to_stdString(extStr);
-#else
-    return strSource;
-#endif
 }
 
 DxfReader::Internal::Internal(const FilePath &filepath, TaskProgress *progress)
@@ -659,7 +643,6 @@ void DxfReader::Internal::OnReadMText(const Dxf_MTEXT &text)
     const auto occTextStr = string_conv<NCollection_String>(text.str);
     const gp_Ax3 locText(pt, extDir, xAxisDir);
     Font_BRepTextBuilder brepTextBuilder;
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 5, 0)
     auto textFormat = makeOccHandle<Font_TextFormatter>();
     textFormat->SetupAlignment(hAlign, vAlign);
     textFormat->Append(occTextStr, *brepFont.FTFont());
@@ -671,10 +654,6 @@ void DxfReader::Internal::OnReadMText(const Dxf_MTEXT &text)
     */
     textFormat->Format();
     const TopoDS_Shape shapeText = brepTextBuilder.Perform(brepFont, textFormat, locText);
-#else
-    const TopoDS_Shape shapeText =
-        brepTextBuilder.Perform(brepFont, occTextStr, locText, hAlign, vAlign);
-#endif
 
     this->addShape(shapeText);
 }

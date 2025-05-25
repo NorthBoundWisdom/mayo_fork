@@ -56,29 +56,17 @@ static const QCursor &rotateCursor()
     return cursor;
 }
 
-#if OCC_VERSION_HEX >= 0x070600
 using RubberBandWidget_ParentType = QWidget;
-#else
-using RubberBandWidget_ParentType = QRubberBand;
-#endif
 
 class RubberBandWidget : public RubberBandWidget_ParentType
 {
 public:
-RubberBandWidget(QWidget *parent)
-#if OCC_VERSION_HEX >= 0x070600
-    : RubberBandWidget_ParentType(parent){}
-#else
-        : RubberBandWidget_ParentType(QRubberBand::Rectangle, parent)
+    RubberBandWidget(QWidget *parent)
+        : RubberBandWidget_ParentType(parent)
     {
-        // QWidget::setStyle() is important, set to windows style will just draw
-        // rectangle frame, otherwise will draw a solid rectangle.
-        this->setStyle(QStyleFactory::create("windows"));
     }
-#endif
 
-    protected :
-#if OCC_VERSION_HEX >= 0x070600
+protected:
     void paintEvent(QPaintEvent *) override
     {
         QPainter painter(this);
@@ -96,7 +84,6 @@ RubberBandWidget(QWidget *parent)
         painter.setBrush(fillColor);
         painter.drawRect(this->rect().adjusted(1, 1, -1, -1));
     }
-#endif
 };
 
 } // namespace Internal

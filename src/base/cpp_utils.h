@@ -211,7 +211,7 @@ constexpr bool inRange(T t) noexcept
     return std::in_range<R>(t);
 #else
     return cmpGreaterEqual(t, std::numeric_limits<R>::lowest()) &&
-           cmpLessEqual(t, std::numeric_limits<R>::max());
+           cmpLessEqual(t, (std::numeric_limits<R>::max)());
 #endif
 }
 

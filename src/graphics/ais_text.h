@@ -20,10 +20,6 @@
 
 #include "base/tkernel_utils.h"
 
-#if OCC_VERSION_HEX < OCC_VERSION_CHECK(7, 5, 0)
-#include <Prs3d_Projector.hxx>
-#endif
-
 namespace Mayo
 {
 
@@ -61,12 +57,6 @@ public:
 protected:
     void Compute(const OccHandle<PrsMgr_PresentationManager> &pm,
                  const OccHandle<Prs3d_Presentation> &pres, const int mode) override;
-
-#if OCC_VERSION_HEX < OCC_VERSION_CHECK(7, 5, 0)
-    void Compute(const OccHandle<Prs3d_Projector> &, const OccHandle<Prs3d_Presentation> &) override
-    {
-    }
-#endif
 
 private:
     struct TextProperties

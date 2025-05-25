@@ -7,11 +7,8 @@
 #include <common/mayo_config.h>
 #include <common/mayo_version.h>
 #include <cstdlib>
-#include <fstream>
 #include <gsl/util>
-#include <iostream>
 #include <memory>
-#include <unordered_map>
 
 #include <QtCore/QCommandLineParser>
 #include <QtCore/QDir>
@@ -29,7 +26,6 @@
 #include <fmt/format.h>
 
 #include "base/application.h"
-#include "base/document_tree_node_properties_provider.h"
 #include "base/io_system.h"
 #include "base/settings.h"
 #include "graphics/graphics_mesh_object_driver.h"
@@ -49,14 +45,12 @@
 #include "qtbackend/qt_signal_thread_helper.h"
 #include "qtcommon/filepath_conv.h"
 #include "qtcommon/log_message_handler.h"
-#include "qtcommon/qstring_conv.h"
 
 #include "app_module.h"
 #include "commands_help.h"
 #include "document_tree_node_properties_providers.h"
 #include "io_gmio/io_gmio.h"
 #include "io_image/io_image.h"
-#include "library_info.h"
 #include "mainwindow.h"
 #include "qtgui_utils.h"
 #include "theme.h"

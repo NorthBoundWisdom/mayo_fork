@@ -6,6 +6,9 @@
 
 #include "application.h"
 
+#include <atomic>
+#include <unordered_map>
+
 #include <BinXCAFDrivers_DocumentRetrievalDriver.hxx>
 #include <BinXCAFDrivers_DocumentStorageDriver.hxx>
 #include <XmlXCAFDrivers_DocumentRetrievalDriver.hxx>
@@ -15,12 +18,6 @@
 #include "property_builtins.h"
 #include "task_common.h"
 #include "tkernel_utils.h"
-#if OCC_VERSION_HEX < OCC_VERSION_CHECK(7, 5, 0)
-#include <CDF_Session.hxx>
-#endif
-
-#include <atomic>
-#include <unordered_map>
 
 namespace Mayo
 {
@@ -33,13 +30,6 @@ public:
     {
     }
 
-#if OCC_VERSION_HEX < OCC_VERSION_CHECK(7, 6, 0)
-    OccHandle<CDM_Document> CreateDocument() override
-    {
-        return new Document(m_app);
-    }
-#endif
-
 private:
     ApplicationPtr m_app;
 };
@@ -51,13 +41,6 @@ public:
         : m_app(app)
     {
     }
-
-#if OCC_VERSION_HEX < OCC_VERSION_CHECK(7, 6, 0)
-    OccHandle<CDM_Document> CreateDocument() override
-    {
-        return new Document(m_app);
-    }
-#endif
 
 private:
     ApplicationPtr m_app;

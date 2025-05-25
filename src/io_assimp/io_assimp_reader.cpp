@@ -569,12 +569,8 @@ OccHandle<XCAFDoc_VisMaterial> AssimpReader::createOccVisMaterial(const aiMateri
         int flag;
         if (material->Get(AI_MATKEY_TWOSIDED, flag) == aiReturn_SUCCESS)
         {
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 6, 0)
             mat->SetFaceCulling(flag ? Graphic3d_TypeOfBackfacingModel_DoubleSided :
                                        Graphic3d_TypeOfBackfacingModel_BackCulled);
-#else
-            mat->SetDoubleSided(flag != 0);
-#endif
         }
     }
 

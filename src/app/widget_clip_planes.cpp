@@ -256,7 +256,6 @@ void WidgetClipPlanes::createPlaneCappingTexture()
     if (!m_textureCapping.IsNull())
         return;
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
     QFile file(":/images/graphics/opencascade_hatch_1.png");
     if (file.open(QIODevice::ReadOnly))
     {
@@ -270,10 +269,6 @@ void WidgetClipPlanes::createPlaneCappingTexture()
         m_textureCapping->EnableRepeat();
         m_textureCapping->GetParams()->SetScale(Graphic3d_Vec2(0.05f, -0.05f));
     }
-#else
-    // TODO Copy the image resource to a temporary file and call
-    // Image_AlienPixMap::Load(tempFilePath)
-#endif
 }
 
 WidgetClipPlanes::UiClipPlane::UiClipPlane(QCheckBox *checkOn, QWidget *widgetControl)
