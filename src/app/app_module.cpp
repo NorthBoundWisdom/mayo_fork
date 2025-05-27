@@ -15,6 +15,7 @@
 #include <BRepBndLib.hxx>
 #include <fmt/format.h>
 
+#include "base/application.h"
 #include "base/bnd_utils.h"
 #include "base/brep_utils.h"
 #include "base/cpp_utils.h"
@@ -22,7 +23,6 @@
 #include "base/io_system.h"
 #include "base/io_writer.h"
 #include "base/settings.h"
-#include "base/tkernel_utils.h"
 #include "gui/gui_application.h"
 #include "gui/gui_document.h"
 #include "qtcommon/filepath_conv.h"
@@ -33,7 +33,6 @@ namespace Mayo
 
 namespace
 {
-
 void readRecentFile(QDataStream &stream, RecentFile *recentFile)
 {
     QString strFilepath;
@@ -394,9 +393,7 @@ OccBRepMeshParameters AppModule::brepMeshParameters(const TopoDS_Shape &shape) c
 
     OccBRepMeshParameters params;
     params.InParallel = true;
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 5, 0)
     params.AllowQualityDecrease = true;
-#endif
     if (m_props.meshingQuality == BRepMeshQuality::UserDefined)
     {
         params.Deflection = UnitSystem::meters(m_props.meshingChordalDeflection.quantity());
@@ -500,5 +497,4 @@ bool AppModule::impl_recordRecentFile(RecentFile *recentFile, GuiDocument *guiDo
     recentFile->thumbnailTimestamp = RecentFile::timestampLastModified(recentFile->filepath);
     return true;
 }
-
 } // namespace Mayo

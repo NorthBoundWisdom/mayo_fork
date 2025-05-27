@@ -15,7 +15,6 @@
 #include "math_utils.h"
 #include "property_builtins.h"
 #include "property_enumeration.h"
-#include "string_conv.h"
 #include "tkernel_utils.h"
 #include "unit_system.h"
 #if __cpp_lib_to_chars
@@ -164,7 +163,7 @@ PropertyValueConversion::Variant PropertyValueConversion::toVariant(const Proper
     }
     else if (isType<PropertyFilePath>(prop))
     {
-        return constRef<PropertyFilePath>(prop).value().u8string();
+        return constRef<PropertyFilePath>(prop).value().string();
     }
     else if (isType<PropertyOccPnt>(prop))
     {

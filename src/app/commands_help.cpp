@@ -11,8 +11,6 @@
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
 
-#include "qtcommon/qstring_conv.h"
-
 #include "app_module.h"
 #include "dialog_about.h"
 #include "library_info.h"

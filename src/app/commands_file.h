@@ -120,5 +120,4 @@ public:
 
     static constexpr std::string_view Name = "quit-app";
 };
-
 } // namespace Mayo

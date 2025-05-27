@@ -345,6 +345,7 @@ static int runApp(QCoreApplication *qtApp)
                                    .arg(strFilepathSettings));
 
             QSettingsStorage fileSettings(strFilepathSettings, QSettings::IniFormat);
+            std::cout << "Loading settings from " << strFilepathSettings.toStdString() << std::endl;
             appSettings->loadFrom(fileSettings, &AppModule::excludeSettingPredicate);
         }
     };
@@ -474,7 +475,7 @@ int main(int argc, char *argv[])
     // in 'listOption' IMPORTANT: capture by reference, because QApplication
     // constructor may alter argc(due to
     //            parsing of arguments)
-    auto fnArgsContainAnyOf = [&](std::initializer_list<const char *> listOption)
+    [[maybe_unused]] auto fnArgsContainAnyOf = [&](std::initializer_list<const char *> listOption)
     {
         for (int i = 1; i < argc; ++i)
         {

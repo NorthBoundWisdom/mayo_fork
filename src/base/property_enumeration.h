@@ -124,9 +124,4 @@ void PropertyEnum<EnumType>::setDescriptions(
     for (const auto &[val, descr] : initList)
         this->addDescription(val, descr);
 }
-
 } // namespace Mayo
-
-#ifdef Q_CC_GNU
-#pragma GCC diagnostic pop
-#endif

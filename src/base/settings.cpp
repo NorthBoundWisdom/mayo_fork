@@ -113,7 +113,7 @@ public:
         const std::string settingPath = std::string(sectionPath).append("/").append(propertyKey);
         if (source.contains(settingPath))
         {
-            std::cout << "load Property From: " << settingPath << std::endl;
+            // std::cout << "load Property From: " << settingPath << std::endl;
             const Settings::Variant value = source.value(settingPath);
             const bool ok = m_propValueConverter->fromVariant(property, value);
             if (!ok)
@@ -218,7 +218,7 @@ void Settings::saveAs(Storage *target, const ExcludePropertyPredicate &fnExclude
         for (const Settings_Section &section : group.vecSection)
         {
             const std::string sectionPath = d->sectionPath(group, section);
-            std::cout << "config file save at: " << sectionPath << std::endl;
+            // std::cout << "config file save at: " << sectionPath << std::endl;
 
             for (const Settings_Setting &setting : section.vecSetting)
             {

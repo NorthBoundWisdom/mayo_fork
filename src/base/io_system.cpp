@@ -11,14 +11,12 @@
 #include <fstream>
 #include <gsl/util>
 #include <locale>
-#include <mutex>
 #include <regex>
 #include <unordered_set>
 #include <vector>
 
 #include <fmt/format.h>
 
-#include "caf_utils.h"
 #include "cpp_utils.h"
 #include "document.h"
 #include "io_parameters_provider.h"
@@ -27,7 +25,6 @@
 #include "messenger.h"
 #include "task_manager.h"
 #include "task_progress.h"
-#include "tkernel_utils.h"
 
 namespace Mayo::IO
 {
@@ -86,7 +83,7 @@ Format System::probeFormat(const FilePath &filepath) const
     }
 
     // Try to guess from file suffix
-    std::string fileSuffix = filepath.extension().u8string();
+    std::string fileSuffix = filepath.extension().string();
     if (!fileSuffix.empty() && fileSuffix.front() == '.')
         fileSuffix.erase(fileSuffix.begin());
 
@@ -235,7 +232,7 @@ bool System::importInDocument(const Args_ImportInDocument &args)
     {
         ok = false;
         taskData.messenger.error() << fmt::format(textIdTr("Error during import of '{}'\n{}"),
-                                                  taskData.filepath.u8string(), errorMsg);
+                                                  taskData.filepath.string(), errorMsg);
     };
     auto fnReadFileError = [&](TaskData &taskData, std::string_view errorMsg)
     {
@@ -310,7 +307,7 @@ bool System::importInDocument(const Args_ImportInDocument &args)
     };
     auto fnDispatchMessages = [=](TaskData &taskData)
     {
-        const auto strFilepath = taskData.filepath.make_preferred().u8string();
+        const auto strFilepath = taskData.filepath.make_preferred().string();
         dispatchWarnings(fmt::format("Warning(s) during import from '{}'", strFilepath),
                          taskData.messenger, messenger);
         dispatchErrors(fmt::format("Errors(s) during import from '{}'", strFilepath),
@@ -405,7 +402,7 @@ bool System::exportApplicationItems(const Args_ExportApplicationItems &args)
         [&]
         {
             Messenger *messenger = args.messenger ? args.messenger : &Messenger::null();
-            const std::string strFilepath = args.targetFilepath.u8string();
+            const std::string strFilepath = args.targetFilepath.string();
             dispatchWarnings(fmt::format("Warning(s) during export to '{}'", strFilepath),
                              msgCollect, messenger);
             dispatchErrors(fmt::format("Errors(s) during export to '{}'", strFilepath), msgCollect,

@@ -13,7 +13,6 @@
 #include "base/application.h"
 #include "gui/gui_application.h"
 
-
 namespace Mayo
 {
 

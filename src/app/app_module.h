@@ -11,7 +11,6 @@
 
 #include <QtCore/QSize>
 
-#include "base/application.h"
 #include "base/document_tree_node_properties_provider.h"
 #include "base/io_parameters_provider.h"
 #include "base/io_system.h"
@@ -19,7 +18,6 @@
 #include "base/occ_brep_mesh_parameters.h"
 #include "base/property_value_conversion.h"
 #include "base/settings.h"
-#include "base/unit_system.h"
 
 #include "app_module_properties.h"
 #include "library_info.h"

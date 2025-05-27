@@ -12,8 +12,8 @@
 #include <QtCore/QObject>
 
 #include "base/document.h"
-#include "base/filepath.h"
 #include "base/text_id.h"
+
 class QWidget;
 
 namespace Mayo
@@ -24,7 +24,6 @@ class GuiApplication;
 class GuiDocument;
 class V3dViewController;
 class TaskManager;
-
 class Command;
 
 // Provides interface to access/interact with application
