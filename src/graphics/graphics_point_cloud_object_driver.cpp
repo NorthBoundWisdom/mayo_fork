@@ -43,9 +43,6 @@ void GraphicsPointCloudObjectDriver::applyDisplayMode(GraphicsObjectPtr object,
                                                       Enumeration::Value /*mode*/) const
 {
     this->throwIf_differentDriver(object);
-    //    this->throwIf_invalidDisplayMode(mode);
-    //    GraphicsUtils::AisObject_contextPtr(object)->SetDisplayMode(object,
-    //    mode, false);
 }
 
 Enumeration::Value

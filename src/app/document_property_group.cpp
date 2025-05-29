@@ -17,7 +17,6 @@
 
 namespace Mayo
 {
-
 DocumentPropertyGroup::DocumentPropertyGroup(const DocumentPtr &doc)
 {
     this->filePath.setValue(filepathCanonical(doc->filePath()));

@@ -13,15 +13,11 @@
 #include <V3d_DirectionalLight.hxx>
 #include <V3d_TypeOfOrientation.hxx>
 
+#include "graphics_create_driver.h"
 #include "graphics_utils.h"
-
 
 namespace Mayo
 {
-
-// Defined in graphics_create_driver.cpp
-OccHandle<Graphic3d_GraphicDriver> graphicsCreateDriver();
-
 namespace Internal
 {
 
@@ -32,44 +28,15 @@ static OccHandle<V3d_Viewer> createOccViewer()
     viewer->SetDefaultViewProj(V3d_XposYnegZpos);
     viewer->SetComputedMode(true);
     viewer->SetDefaultComputedMode(true);
-    //    viewer->SetDefaultVisualization(V3d_ZBUFFER);
-    //    viewer->SetDefaultShadingModel(V3d_GOURAUD);
     viewer->SetDefaultLights();
-
-    //    auto ambientLight = new V3d_AmbientLight;
-    //    ambientLight->SetIntensity(0.7f);
-    //    viewer->AddLight(ambientLight);
-
-    //    auto dirLight = new V3d_DirectionalLight;
-    //    dirLight->SetIntensity(0.8f);
-    //    dirLight->SetHeadlight(true);
-    //    dirLight->SetDirection(0, 0, -1);
-    //    dirLight->SetSmoothAngle(3.14159265f * 6.f / 180.f);
-    //    viewer->AddLight(dirLight);
-
     viewer->SetLightOn();
-
-#if 0
-    for (const OccHandle<Graphic3d_CLight>& light : viewer->DefinedLights()) {
-        if (light->Name() == "amblight" || light->Type() == Graphic3d_TypeOfLightSource_Ambient) {
-            light->SetIntensity(1.f);
-        }
-        else if (light->Name() == "headlight" || light->Type() == Graphic3d_TypeOfLightSource_Directional) {
-            light->SetIntensity(5.f);
-            light->SetHeadlight(true);
-            light->SetDirection(0, 0, -1);
-        }
-    }
-#endif
 
     return viewer;
 }
-
 } // namespace Internal
 
 namespace
 {
-
 class InteractiveContext : public AIS_InteractiveContext
 {
     DEFINE_STANDARD_RTTI_INLINE(InteractiveContext, AIS_InteractiveContext)
@@ -89,9 +56,7 @@ public:
         return displayMode;
     }
 };
-
 DEFINE_STANDARD_HANDLE(InteractiveContext, AIS_InteractiveContext)
-
 } // namespace
 
 class GraphicsScene::Private
@@ -179,7 +144,6 @@ void GraphicsScene::redraw()
     if (d->m_isRedrawBlocked)
         return;
 
-    // d->m_aisContext->UpdateCurrentViewer();
     for (auto itView = this->v3dViewer()->DefinedViewIterator(); itView.More(); itView.Next())
         this->signalRedrawRequested.send(itView.Value());
 }

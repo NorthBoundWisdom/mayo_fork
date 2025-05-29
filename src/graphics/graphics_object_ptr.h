@@ -12,8 +12,6 @@
 
 namespace Mayo
 {
-
 using GraphicsObjectPtr = OccHandle<AIS_InteractiveObject>;
 using GraphicsObjectSelectionMode = int;
-
 } // namespace Mayo

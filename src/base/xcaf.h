@@ -13,13 +13,11 @@
 #include <XCAFDoc_Material.hxx>
 #include <XCAFDoc_MaterialTool.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
+#include <XCAFDoc_VisMaterialTool.hxx>
 
 #include "libtree.h"
 #include "occ_handle.h"
 #include "quantity.h"
-#if OCC_VERSION_HEX >= 0x070500
-#include <XCAFDoc_VisMaterialTool.hxx>
-#endif
 
 namespace Mayo
 {
@@ -44,13 +42,7 @@ public:
     OccHandle<XCAFDoc_LayerTool> layerTool() const;
     OccHandle<XCAFDoc_ColorTool> colorTool() const;
     OccHandle<XCAFDoc_MaterialTool> materialTool() const;
-#if OCC_VERSION_HEX >= 0x070500
     OccHandle<XCAFDoc_VisMaterialTool> visMaterialTool() const;
-#endif
-
-    // --
-    // -- XCAFDoc_ShapeTool  helpers
-    // --
 
     TDF_LabelSequence topLevelFreeShapes() const;
     static TDF_LabelSequence shapeComponents(const TDF_Label &lbl);

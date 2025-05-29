@@ -105,43 +105,6 @@ void XCaf::setShape(const TDF_Label &label, const TopoDS_Shape &shape)
     this->shapeTool()->SetShape(label, shape);
 }
 
-// QString XCaf::findLabelName(const TDF_Label& lbl)
-//{
-//     QString name = CafUtils::labelAttrStdName(lbl);
-//     if (name.isEmpty()) {
-//         if (XCaf::isShape(lbl)) {
-//             const TopoDS_Shape shape = XCaf::shape(lbl);
-//             switch (shape.ShapeType()) {
-//             case TopAbs_COMPOUND: name = "Compound"; break;
-//             case TopAbs_COMPSOLID: name = "CompSolid"; break;
-//             case TopAbs_SOLID: name = "Solid"; break;
-//             case TopAbs_SHELL: name = "Shell"; break;
-//             case TopAbs_FACE: name = "Face"; break;
-//             case TopAbs_WIRE: name = "Wire"; break;
-//             case TopAbs_EDGE: name = "Edge"; break;
-//             case TopAbs_VERTEX: name = "Vertex"; break;
-//             case TopAbs_SHAPE: name = "Shape"; break;
-//             }
-//             name = QString("%1 %2").arg(name).arg(lbl.Tag());
-//         }
-//         else {
-//             name = QString("[[%1]]").arg(CafUtils::labelTag(lbl));
-//         }
-//     }
-
-//    return name;
-//}
-
-// QString XCaf::findLabelName(TreeNodeId nodeId) const
-//{
-//     return XCaf::findLabelName(m_asmTree.nodeData(nodeId));
-// }
-
-// void XCaf::setLabelName(TreeNodeId nodeId, const QString& name)
-//{
-//     XCaf::setLabelName(m_asmTree.nodeData(nodeId), name);
-// }
-
 bool XCaf::isShapeAssembly(const TDF_Label &lbl)
 {
     return XCAFDoc_ShapeTool::IsAssembly(lbl);
@@ -370,14 +333,7 @@ TreeNodeId XCaf::deepBuildAssemblyTree(TreeNodeId parentNode, const TDF_Label &l
         const TDF_Label referred = XCaf::shapeReferred(label);
         this->deepBuildAssemblyTree(node, referred);
     }
-#if 0
-    else if (XCaf::isShapeSimple(label)) {
-        for (const TDF_Label& child : XCaf::shapeSubs(label))
-            this->deepBuildAssemblyTree(node, child);
-    }
-#endif
 
     return node;
 }
-
 } // namespace Mayo

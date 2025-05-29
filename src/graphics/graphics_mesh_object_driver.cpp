@@ -67,12 +67,13 @@ GraphicsObjectPtr GraphicsMeshObjectDriver::createObject(const TDF_Label &label)
             if (tface)
             {
                 polyTri = tface->Triangulation();
-                // ptrLocationPolyTri = &shape.Location();
             }
 
             auto attrMeshData = CafUtils::findAttribute<TriangulationAnnexData>(label);
             if (attrMeshData)
+            {
                 spanNodeColor = attrMeshData->nodeColors();
+            }
         }
     }
 
@@ -80,13 +81,15 @@ GraphicsObjectPtr GraphicsMeshObjectDriver::createObject(const TDF_Label &label)
     {
         auto object = makeOccHandle<MeshVS_Mesh>();
         object->SetDataSource(new GraphicsMeshDataSource(polyTri));
-        // meshVisu->AddBuilder(..., false); -> No selection
         if (!spanNodeColor.empty())
         {
             auto meshPrsBuilder = new MeshVS_NodalColorPrsBuilder(
                 object, MeshVS_DMF_NodalColorDataPrs | MeshVS_DMF_OCCMask);
+
             for (int i = 0; CppUtils::cmpLess(i, spanNodeColor.size()); ++i)
+            {
                 meshPrsBuilder->SetColor(i + 1, spanNodeColor[i]);
+            }
 
             object->AddBuilder(meshPrsBuilder, true);
         }
