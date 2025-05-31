@@ -34,13 +34,22 @@
 
 namespace Mayo
 {
-
+/**
+ * @brief 创建一个虚拟窗口用于离屏渲染
+ *
+ * 该函数根据不同操作系统创建相应的虚拟窗口。虚拟窗口不会被实际显示出来，
+ * 但可以用于OpenCascade图形渲染管线中，适用于图像离屏生成、3D模型预览等场景。
+ *
+ * @param gfxDriver 图形驱动程序句柄，在非Windows平台上用于获取显示连接
+ * @param wndWidth 窗口宽度
+ * @param wndHeight 窗口高度
+ * @return OccHandle<Aspect_Window> 返回创建的虚拟窗口句柄
+ */
 OccHandle<Aspect_Window>
-graphicsCreateVirtualWindow(const OccHandle<Graphic3d_GraphicDriver> &gfxDriver, int wndWidth,
-                            int wndHeight)
+graphicsCreateVirtualWindow([[maybe_unused]] const OccHandle<Graphic3d_GraphicDriver> &gfxDriver,
+                            int wndWidth, int wndHeight)
 {
 #if defined(MAYO_OS_WINDOWS)
-    MAYO_UNUSED(gfxDriver);
     // Create a "virtual" WNT window being a pure WNT window redefined to be never
     // shown
     static OccHandle<WNT_WClass> wClass;
@@ -52,10 +61,8 @@ graphicsCreateVirtualWindow(const OccHandle<Graphic3d_GraphicDriver> &gfxDriver,
 
     auto wnd = new WNT_Window("", wClass, WS_POPUP, 0, 0, wndWidth, wndHeight, Quantity_NOC_BLACK);
 #elif defined(MAYO_OS_MAC)
-    MAYO_UNUSED(gfxDriver);
     auto wnd = new Cocoa_Window("", 0, 0, wndWidth, wndHeight);
 #elif defined(MAYO_OS_ANDROID)
-    MAYO_UNUSED(gfxDriver);
     auto wnd = new Aspect_NeutralWindow;
     wnd->SetSize(wndWidth, wndHeight);
 #else

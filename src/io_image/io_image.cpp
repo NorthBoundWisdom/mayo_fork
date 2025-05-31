@@ -25,17 +25,13 @@
 #include "base/property_builtins.h"
 #include "base/property_enumeration.h"
 #include "base/task_progress.h"
+#include "graphics/graphics_create_virtual_window.h"
 #include "graphics/graphics_scene.h"
 #include "graphics/graphics_utils.h"
 #include "gui/gui_application.h"
 
 namespace Mayo
 {
-
-// Defined in graphics_create_virtual_window.cpp
-OccHandle<Aspect_Window> graphicsCreateVirtualWindow(const OccHandle<Graphic3d_GraphicDriver> &,
-                                                     int, int);
-
 namespace IO
 {
 

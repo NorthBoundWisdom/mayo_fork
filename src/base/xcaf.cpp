@@ -54,12 +54,10 @@ OccHandle<XCAFDoc_MaterialTool> XCaf::materialTool() const
     return XCAFDoc_DocumentTool::MaterialTool(m_labelMain);
 }
 
-#if OCC_VERSION_HEX >= 0x070500
 OccHandle<XCAFDoc_VisMaterialTool> XCaf::visMaterialTool() const
 {
     return XCAFDoc_DocumentTool::VisMaterialTool(m_labelMain);
 }
-#endif
 
 TDF_LabelSequence XCaf::topLevelFreeShapes() const
 {

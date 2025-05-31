@@ -18,7 +18,7 @@
 #include <TCollection_ExtendedString.hxx>
 #include <gp_Pnt.hxx>
 
-#include "base/tkernel_utils.h"
+#include "base/occ_handle.h"
 
 namespace Mayo
 {

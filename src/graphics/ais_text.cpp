@@ -25,7 +25,6 @@
 #include <TCollection_AsciiString.hxx>
 #include <gp_Pnt.hxx>
 
-
 namespace Mayo
 {
 
@@ -145,13 +144,8 @@ void AIS_Text::Compute(const OccHandle<PrsMgr_PresentationManager> &,
 {
     for (unsigned i = 0; i < this->textCount(); ++i)
     {
-        Prs3d_Text::Draw(
-#if OCC_VERSION_HEX >= 0x070400
-            pres->CurrentGroup(),
-#else
-            Prs3d_Root::CurrentGroup(pres),
-#endif
-            this->presentationTextAspect(i), this->text(i), this->position(i));
+        Prs3d_Text::Draw(pres->CurrentGroup(), this->presentationTextAspect(i), this->text(i),
+                         this->position(i));
     }
 }
 
