@@ -1,0 +1,16 @@
+name: actionlint check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run actionlint
+        uses: devops-actions/actionlint@v0.1.2
