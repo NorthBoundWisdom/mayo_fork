@@ -560,7 +560,6 @@ if(Mayo_BuildApp)
             MACOSX_BUNDLE_COPYRIGHT ${Mayo_Copyright}
             MACOSX_BUNDLE_ICON_FILE appicon.icns
             MACOSX_BUNDLE_GUI_IDENTIFIER "com.mind.mayo"
-            WIN32_EXECUTABLE TRUE
             MACOSX_BUNDLE TRUE
     )
 

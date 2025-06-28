@@ -21,27 +21,4 @@
 namespace Mayo
 {
 
-using FunctionCreateGraphicsDriver = std::function<OccHandle<Graphic3d_GraphicDriver>()>;
-
-static FunctionCreateGraphicsDriver &getFunctionCreateGraphicsDriver()
-{
-    static FunctionCreateGraphicsDriver fn = []
-    { return makeOccHandle<OpenGl_GraphicDriver>(new Aspect_DisplayConnection); };
-    return fn;
-}
-
-void setFunctionCreateGraphicsDriver(FunctionCreateGraphicsDriver fn)
-{
-    getFunctionCreateGraphicsDriver() = std::move(fn);
-}
-
-OccHandle<Graphic3d_GraphicDriver> graphicsCreateDriver()
-{
-    const auto &fn = getFunctionCreateGraphicsDriver();
-    if (fn)
-        return fn();
-
-    return {};
-}
-
 } // namespace Mayo

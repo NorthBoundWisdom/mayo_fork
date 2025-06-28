@@ -8,6 +8,7 @@
 
 #include <cassert>
 #include <gsl/span>
+#include <climits>
 
 namespace Mayo
 {

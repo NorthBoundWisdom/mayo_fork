@@ -348,7 +348,7 @@ QString CommandSystemInformation::data()
     {
         const auto pwdChar = sh->passwordMaskCharacter();
         ostr << indent << "styleHints:\n"
-             << indentx2 << "keyboardAutoRepeatRateF: " << sh->keyboardAutoRepeatRateF() << '\n'
+             << indentx2 << "keyboardAutoRepeatRate: " << sh->keyboardAutoRepeatRate() << '\n'
              << indentx2 << "keyboardInputInterval: " << sh->keyboardInputInterval() << '\n'
              << indentx2 << "mouseDoubleClickInterval: " << sh->mouseDoubleClickInterval() << '\n'
              << indentx2 << "mousePressAndHoldInterval: " << sh->mousePressAndHoldInterval() << '\n'

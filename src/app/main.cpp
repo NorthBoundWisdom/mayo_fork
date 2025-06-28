@@ -58,13 +58,11 @@
 #include "widget_model_tree_builder_mesh.h"
 #include "widget_model_tree_builder_xde.h"
 #include "widget_occ_view.h"
+#include "widget_occ_view_gl.h"
+#include "widget_occ_view_i.h"
 
 namespace Mayo
 {
-
-// Declared in graphics/graphics_create_driver.cpp
-void setFunctionCreateGraphicsDriver(std::function<OccHandle<Graphic3d_GraphicDriver>()> fn);
-
 // Provides an i18n context for the current file(main.cpp)
 class Main
 {
@@ -128,12 +126,6 @@ static CommandLineArguments processCommandLine()
                                     Main::tr("Files to open at startup, optionally"),
                                     Main::tr("[files...]"));
 
-#ifdef MAYO_WITH_TESTS
-    const QCommandLineOption cmdRunTests(QStringList{"runtests"},
-                                         Main::tr("Execute unit tests and exit application"));
-    cmdParser.addOption(cmdRunTests);
-#endif
-
     cmdParser.process(QCoreApplication::arguments());
 
     // Retrieve arguments
@@ -150,10 +142,6 @@ static CommandLineArguments processCommandLine()
     for (const QString &posArg : cmdParser.positionalArguments())
         args.listFilepathToOpen.push_back(filepathFrom(posArg));
 
-#ifdef NDEBUG
-    // By default this will exclude debug logs in release build
-    args.includeDebugLogs = cmdParser.isSet(cmdDebugLogs);
-#endif
     args.showSystemInformation = cmdParser.isSet(cmdSysInfo);
 
     return args;
@@ -278,44 +266,6 @@ Thumbnail createGuiDocumentThumbnail(GuiDocument *guiDoc, QSize size)
     return thumbnail;
 }
 
-// Initializes "GUI" objects
-static void initGui(GuiApplication *guiApp)
-{
-    if (!guiApp)
-        return;
-
-    // Fallback for OpenGL
-    setFunctionCreateGraphicsDriver(&QWidgetOccView::createCompatibleGraphicsDriver);
-    IWidgetOccView::setCreator(&QWidgetOccView::create);
-
-    // Use QOpenGLWidget if possible
-#if OCC_VERSION_HEX >= 0x070600
-    const auto &propForceOpenGlFallbackWidget =
-        AppModule::get()->properties()->forceOpenGlFallbackWidget;
-    AppModule::get()->settings()->loadProperty(&propForceOpenGlFallbackWidget);
-    const bool hasQGuiApplication = qobject_cast<QGuiApplication *>(QCoreApplication::instance());
-    if (!propForceOpenGlFallbackWidget && hasQGuiApplication)
-    { // QOpenGL requires QGuiApplication
-        const std::string strGlVersion = queryGlVersionString();
-        const QVersionNumber glVersion = parseSemanticVersionString(strGlVersion);
-        if (!glVersion.isNull() && glVersion.majorVersion() >= 2)
-        { // Requires at least OpenGL version >= 2.0
-            setFunctionCreateGraphicsDriver(&QOpenGLWidgetOccView::createCompatibleGraphicsDriver);
-            IWidgetOccView::setCreator(&QOpenGLWidgetOccView::create);
-        }
-        else
-        {
-            qWarning() << "Can't use QOpenGLWidget because OpenGL version is too old";
-        }
-    }
-#endif
-
-    // Register Graphics entity drivers
-    guiApp->addGraphicsObjectDriver(std::make_unique<GraphicsShapeObjectDriver>());
-    guiApp->addGraphicsObjectDriver(std::make_unique<GraphicsMeshObjectDriver>());
-    guiApp->addGraphicsObjectDriver(std::make_unique<GraphicsPointCloudObjectDriver>());
-}
-
 // Initializes and runs Mayo application
 static int runApp(QCoreApplication *qtApp)
 {
@@ -391,7 +341,28 @@ static int runApp(QCoreApplication *qtApp)
     // Initialize Gui application
     auto guiApp = new GuiApplication(app);
     auto _ = gsl::finally([=] { delete guiApp; });
-    initGui(guiApp);
+
+    /* init gl */
+    constexpr bool use_glWidget = true;
+    if (use_glWidget)
+    {
+        // Use QOpenGLWidget if possible
+        GraphicsScene::setFunctionCreateGraphicsDriver(
+            &QOpenGLWidgetOccView::createCompatibleGraphicsDriver);
+        IWidgetOccView::setCreator(&QOpenGLWidgetOccView::create);
+    }
+    else
+    {
+        // Use QWidgetOccView
+        GraphicsScene::setFunctionCreateGraphicsDriver(
+            &QWidgetOccView::createCompatibleGraphicsDriver);
+        IWidgetOccView::setCreator(&QWidgetOccView::create);
+    }
+
+    // Register Graphics entity drivers
+    guiApp->addGraphicsObjectDriver(std::make_unique<GraphicsShapeObjectDriver>());
+    guiApp->addGraphicsObjectDriver(std::make_unique<GraphicsMeshObjectDriver>());
+    guiApp->addGraphicsObjectDriver(std::make_unique<GraphicsPointCloudObjectDriver>());
 
     // Register providers to query document tree node properties
     appModule->addPropertiesProvider(std::make_unique<XCaf_DocumentTreeNodePropertiesProvider>());
@@ -436,12 +407,6 @@ static int runApp(QCoreApplication *qtApp)
         fnCriticalExit(Main::tr("Failed to load theme '%1'").arg(args.themeName));
 
     mayoTheme()->setup();
-    const QColor bkgGradientStart =
-        mayoTheme()->color(Theme::Color::View3d_BackgroundGradientStart);
-    const QColor bkgGradientEnd = mayoTheme()->color(Theme::Color::View3d_BackgroundGradientEnd);
-    GuiDocument::setDefaultGradientBackground({QtGuiUtils::toPreferredColorSpace(bkgGradientStart),
-                                               QtGuiUtils::toPreferredColorSpace(bkgGradientEnd),
-                                               Aspect_GFM_VER});
 
     // Create MainWindow
     MainWindow mainWindow(guiApp);

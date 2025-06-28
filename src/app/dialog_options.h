@@ -26,7 +26,7 @@ class DialogOptions : public QDialog
 
 public:
     DialogOptions(Settings *settings, QWidget *parent = nullptr);
-    ~DialogOptions();
+    ~DialogOptions() override;
 
     IPropertyEditorFactory *editorFactory() const
     {

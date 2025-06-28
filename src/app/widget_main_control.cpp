@@ -34,7 +34,7 @@
 #include "widget_file_system.h"
 #include "widget_gui_document.h"
 #include "widget_model_tree.h"
-#include "widget_occ_view.h"
+#include "widget_occ_view_i.h"
 #include "widget_properties_editor.h"
 
 namespace Mayo

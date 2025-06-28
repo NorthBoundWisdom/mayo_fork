@@ -28,8 +28,9 @@
 #include "widget_explode_assembly.h"
 #include "widget_grid.h"
 #include "widget_measure.h"
-#include "widget_occ_view.h"
 #include "widget_occ_view_controller.h"
+#include "widget_occ_view_i.h"
+
 
 namespace Mayo
 {

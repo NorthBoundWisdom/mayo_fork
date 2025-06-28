@@ -14,8 +14,9 @@
 #include <Bnd_Box.hxx>
 #include <V3d_View.hxx>
 
-#include "base/document.h"
+#include "base/document_ptr.h"
 #include "base/global.h"
+#include "base/libtree.h"
 #include "base/signal.h"
 #include "graphics/graphics_object_driver.h"
 #include "graphics/graphics_scene.h"

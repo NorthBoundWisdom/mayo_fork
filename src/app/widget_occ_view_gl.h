@@ -19,8 +19,12 @@
 
 namespace Mayo
 {
-// Fallback using traditional QWidget wrapper, no translucid background support
-class QWidgetOccView : public QWidget, public IWidgetOccView
+
+// Integration of OpenCascade 7.6 with QOpenGLWidget allows widgets with
+// translucid background to be correctly displayed over V3d_View
+// QOpenGLWidgetOccView implementation is based on
+// https://github.com/gkv311/occt-samples-qopenglwidget
+class QOpenGLWidgetOccView : public QOpenGLWidget, public IWidgetOccView
 {
 public:
     void redraw() override;
@@ -30,23 +34,17 @@ public:
     }
     bool supportsWidgetOpacity() const override
     {
-        return false;
+        return true;
     }
 
-    static QWidgetOccView *create(const OccHandle<V3d_View> &view, QWidget *parent);
+    static QOpenGLWidgetOccView *create(const OccHandle<V3d_View> &view, QWidget *parent);
     static OccHandle<Graphic3d_GraphicDriver> createCompatibleGraphicsDriver();
 
 private:
-    QWidgetOccView(const OccHandle<V3d_View> &view, QWidget *parent = nullptr);
+    QOpenGLWidgetOccView(const OccHandle<V3d_View> &view, QWidget *parent = nullptr);
 
 protected:
-    void showEvent(QShowEvent *event) override;
-    void paintEvent(QPaintEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
-    QPaintEngine *paintEngine() const override
-    {
-        return nullptr;
-    }
+    void initializeGL() override;
+    void paintGL() override;
 };
-
 } // namespace Mayo

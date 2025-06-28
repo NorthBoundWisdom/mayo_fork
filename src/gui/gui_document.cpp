@@ -6,27 +6,22 @@
 
 #include "gui_document.h"
 
-#include "base/application.h"
-#include "base/application_item.h"
-#include "base/bnd_utils.h"
-#include "base/caf_utils.h"
-#include "base/cpp_utils.h"
-#include "base/document.h"
-#include "base/math_utils.h"
-#include "base/tkernel_utils.h"
-#include "graphics/graphics_utils.h"
-#include "gui/gui_application.h"
-
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
-#include <AIS_ViewCube.hxx>
-#endif
 #include <cmath>
 
 #include <AIS_ConnectedInteractive.hxx>
 #include <AIS_Trihedron.hxx>
+#include <AIS_ViewCube.hxx>
 #include <Geom_Axis2Placement.hxx>
 #include <Graphic3d_GraphicDriver.hxx>
 #include <V3d_TypeOfOrientation.hxx>
+
+#include "base/application_item.h"
+#include "base/bnd_utils.h"
+#include "base/cpp_utils.h"
+#include "base/document.h"
+#include "base/math_utils.h"
+#include "graphics/graphics_utils.h"
+#include "gui/gui_application.h"
 
 namespace Mayo
 {
@@ -49,7 +44,6 @@ static OccHandle<AIS_Trihedron> createOriginTrihedron()
     aisTrihedron->SetLabel(Prs3d_DP_XAxis, "");
     aisTrihedron->SetLabel(Prs3d_DP_YAxis, "");
     aisTrihedron->SetLabel(Prs3d_DP_ZAxis, "");
-    // aisTrihedron->SetTextColor(Quantity_NOC_GRAY40);
     aisTrihedron->SetSize(60);
     aisTrihedron->SetTransformPersistence(
         new Graphic3d_TransformPers(Graphic3d_TMF_ZoomPers, axis->Ax2().Location()));
@@ -61,7 +55,7 @@ static OccHandle<AIS_Trihedron> createOriginTrihedron()
 static GuiDocument::GradientBackground &defaultGradientBackground()
 {
     static GuiDocument::GradientBackground defaultGradientBackground{
-        Quantity_NOC_GRAY50, Quantity_NOC_GRAY60, Aspect_GFM_VER};
+        Quantity_NOC_GRAY90, Quantity_NOC_GRAY50, Aspect_GFM_VER};
     return defaultGradientBackground;
 }
 
@@ -76,16 +70,10 @@ GuiDocument::GuiDocument(const DocumentPtr &doc, GuiApplication *guiApp)
 {
     Expects(!doc.IsNull());
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
     this->setViewTrihedronMode(ViewTrihedronMode::AisViewCube);
     this->setViewTrihedronCorner(Aspect_TOTP_LEFT_UPPER);
-#else
-    this->setViewTrihedronMode(ViewTrihedronMode::V3dViewZBuffer);
-    this->setViewTrihedronCorner(Aspect_TOTP_LEFT_LOWER);
-#endif
 
-    // m_v3dView->SetShadingModel(Graphic3d_TypeOfShadingModel_Pbr);
-    //  3D view - Enable anti-aliasing with MSAA
+    // 3D view - Enable anti-aliasing with MSAA
     m_v3dView->ChangeRenderingParams().IsAntialiasingEnabled = true;
     m_v3dView->ChangeRenderingParams().NbMsaaSamples = 4;
     m_v3dView->ChangeRenderingParams().CollectedStats =
@@ -96,7 +84,6 @@ GuiDocument::GuiDocument(const DocumentPtr &doc, GuiApplication *guiApp)
     m_v3dView->SetBgGradientColors(GuiDocument::defaultGradientBackground().color1,
                                    GuiDocument::defaultGradientBackground().color2,
                                    GuiDocument::defaultGradientBackground().fillStyle);
-    // m_v3dView->SetShadingModel(Graphic3d_TOSM_PBR);
 
     m_cameraAnimation->setView(m_v3dView);
 
@@ -185,7 +172,6 @@ void GuiDocument::setDevicePixelRatio(double ratio)
     }
     case ViewTrihedronMode::AisViewCube:
     {
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
         auto viewCube = OccHandle<AIS_ViewCube>::DownCast(m_aisViewCube);
         if (viewCube)
         {
@@ -197,7 +183,6 @@ void GuiDocument::setDevicePixelRatio(double ratio)
                                             Graphic3d_Vec2i(xyOffset, xyOffset)));
             viewCube->Redisplay(true /*allModes*/);
         }
-#endif
 
         break;
     }
@@ -430,14 +415,12 @@ bool GuiDocument::processAction(const GraphicsOwnerPtr &gfxOwner)
     if (!gfxOwner)
         return false;
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
     auto viewCubeOwner = OccHandle<AIS_ViewCubeOwner>::DownCast(gfxOwner);
     if (viewCubeOwner)
     {
         this->setViewCameraOrientation(viewCubeOwner->MainOrientation());
         return true;
     }
-#endif
 
     return false;
 }
@@ -489,7 +472,6 @@ void GuiDocument::setViewTrihedronMode(ViewTrihedronMode mode)
     {
         if (m_aisViewCube.IsNull())
         {
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
             auto aisViewCube = new AIS_ViewCube;
             aisViewCube->SetBoxColor(Quantity_NOC_GRAY75);
             // aisViewCube->SetFixedAnimationLoop(false);
@@ -506,7 +488,6 @@ void GuiDocument::setViewTrihedronMode(ViewTrihedronMode mode)
             datumAspect->ShadingAspect(Prs3d_DP_YAxis)->SetColor(Quantity_NOC_GREEN2);
             datumAspect->ShadingAspect(Prs3d_DP_ZAxis)->SetColor(Quantity_NOC_BLUE2);
             m_aisViewCube = aisViewCube;
-#endif
         }
 
         m_v3dView->TriedronErase();
@@ -553,24 +534,16 @@ int GuiDocument::aisViewCubeBoundingSize() const
     if (!m_aisViewCube)
         return 0;
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
     auto hnd = OccHandle<AIS_ViewCube>::DownCast(m_aisViewCube);
     auto size = 2 * (hnd->Size() + hnd->BoxFacetExtension() + hnd->BoxEdgeGap() +
                      hnd->BoxEdgeMinSize() + hnd->BoxCornerMinSize() + hnd->RoundRadius()) +
                 hnd->AxesPadding() + hnd->FontHeight();
     return std::lround(size);
-#else
-    return 0;
-#endif
 }
 
-bool GuiDocument::isAisViewCubeObject([[maybe_unused]] const GraphicsObjectPtr &gfxObject)
+bool GuiDocument::isAisViewCubeObject(const GraphicsObjectPtr &gfxObject)
 {
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
     return !OccHandle<AIS_ViewCube>::DownCast(gfxObject).IsNull();
-#else
-    return false;
-#endif
 }
 
 const GuiDocument::GradientBackground &GuiDocument::defaultGradientBackground()

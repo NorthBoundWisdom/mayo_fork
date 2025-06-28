@@ -270,32 +270,7 @@ void GraphicsUtils::Gfx3dClipPlane_setPosition(const OccHandle<Graphic3d_ClipPla
 
 bool GraphicsUtils::ImagePixmap_flipY(Image_PixMap &pixmap)
 {
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 6, 0)
     return Image_PixMap::FlipY(pixmap);
-#else
-    // Excerpt from OpenCascade7.6/src/Image/Image_Pixmap.cpp
-
-    if (pixmap.IsEmpty() || pixmap.SizeX() == 0 || pixmap.SizeY() == 0)
-        return false;
-
-    NCollection_Buffer tmp(NCollection_BaseAllocator::CommonBaseAllocator());
-    const size_t rowSize = pixmap.SizeRowBytes();
-    if (!tmp.Allocate(rowSize))
-        return false;
-
-    // For odd height middle row should be left as is
-    const Standard_Size nbRowsHalf = pixmap.SizeY() / 2;
-    for (Standard_Size rowT = 0, rowB = pixmap.SizeY() - 1; rowT < nbRowsHalf; ++rowT, --rowB)
-    {
-        Standard_Byte *top = pixmap.ChangeRow(rowT);
-        Standard_Byte *bottom = pixmap.ChangeRow(rowB);
-        std::memcpy(tmp.ChangeData(), top, rowSize);
-        std::memcpy(top, bottom, rowSize);
-        std::memcpy(bottom, tmp.Data(), rowSize);
-    }
-
-    return true;
-#endif
 }
 
 } // namespace Mayo

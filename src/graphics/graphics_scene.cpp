@@ -18,6 +18,28 @@
 
 namespace Mayo
 {
+static std::function<OccHandle<Graphic3d_GraphicDriver>()> &getFunctionCreateGraphicsDriver()
+{
+    static std::function<OccHandle<Graphic3d_GraphicDriver>()> fn;
+    return fn;
+}
+
+void GraphicsScene::setFunctionCreateGraphicsDriver(
+    std::function<OccHandle<Graphic3d_GraphicDriver>()> fn)
+{
+    getFunctionCreateGraphicsDriver() = std::move(fn);
+}
+
+OccHandle<Graphic3d_GraphicDriver> graphicsCreateDriver()
+{
+    const auto &fn = getFunctionCreateGraphicsDriver();
+    if (fn)
+        return fn();
+
+    std::cerr << "Error: No function set to create Graphic3d_GraphicDriver. " << std::endl;
+    return {};
+}
+
 namespace Internal
 {
 

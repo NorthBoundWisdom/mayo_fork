@@ -59,13 +59,13 @@ CommandChangeProjection::CommandChangeProjection(IAppContext *context)
     this->setAction(action);
 
     QObject::connect(group, &QActionGroup::triggered, this,
-                     [=](const QAction *action)
+                     [=](const QAction *l_action)
                      {
                          GuiDocument *guiDoc = this->currentGuiDocument();
                          if (guiDoc)
                          {
                              guiDoc->v3dView()->Camera()->SetProjectionType(
-                                 action == m_actionOrtho ?
+                                 l_action == m_actionOrtho ?
                                      Graphic3d_Camera::Projection_Orthographic :
                                      Graphic3d_Camera::Projection_Perspective);
                              guiDoc->graphicsView().redraw();

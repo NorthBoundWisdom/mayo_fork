@@ -17,5 +17,4 @@
 
 namespace Mayo
 {
-extern OccHandle<Graphic3d_GraphicDriver> graphicsCreateDriver();
 } // namespace Mayo

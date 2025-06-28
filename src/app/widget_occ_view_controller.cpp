@@ -20,7 +20,7 @@
 
 #include "qtgui_utils.h"
 #include "theme.h"
-#include "widget_occ_view.h"
+#include "widget_occ_view_i.h"
 
 namespace Mayo
 {

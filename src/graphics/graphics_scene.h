@@ -25,6 +25,10 @@ namespace Mayo
 class GraphicsScene
 {
 public:
+    static void
+    setFunctionCreateGraphicsDriver(std::function<OccHandle<Graphic3d_GraphicDriver>()> fn);
+
+public:
     GraphicsScene();
     ~GraphicsScene();
 
