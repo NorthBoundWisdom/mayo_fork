@@ -4,13 +4,14 @@
 ** See license at https://github.com/fougue/mayo/blob/master/LICENSE.txt
 ****************************************************************************/
 
-#include "graphics_point_cloud_object_driver.h"
-
 #include <AIS_PointCloud.hxx>
 
 #include "base/caf_utils.h"
 #include "base/label_data.h"
 #include "base/point_cloud_data.h"
+
+#include "graphics_object_driver_point_cloud.h"
+
 
 namespace Mayo
 {

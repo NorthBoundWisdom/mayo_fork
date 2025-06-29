@@ -1271,37 +1271,37 @@ If activated, deflection used for the polygonalisation of each edge will be `Cho
 <context>
     <name>Mayo::GraphicsMeshObjectDriver</name>
     <message>
-        <location filename="../src/graphics/graphics_mesh_object_driver.cpp" line="37"/>
+        <location filename="../src/graphics/graphics_object_driver_mesh.cpp" line="37"/>
         <source>Mesh_Wireframe</source>
         <translation>[Mesh] Wireframe</translation>
     </message>
     <message>
-        <location filename="../src/graphics/graphics_mesh_object_driver.cpp" line="38"/>
+        <location filename="../src/graphics/graphics_object_driver_mesh.cpp" line="38"/>
         <source>Mesh_Shaded</source>
         <translation>[Mesh] Shaded</translation>
     </message>
     <message>
-        <location filename="../src/graphics/graphics_mesh_object_driver.cpp" line="39"/>
+        <location filename="../src/graphics/graphics_object_driver_mesh.cpp" line="39"/>
         <source>Mesh_Shrink</source>
         <translation>[Mesh] Shrink</translation>
     </message>
     <message>
-        <location filename="../src/graphics/graphics_mesh_object_driver.cpp" line="201"/>
+        <location filename="../src/graphics/graphics_object_driver_mesh.cpp" line="201"/>
         <source>color</source>
         <translation>Color</translation>
     </message>
     <message>
-        <location filename="../src/graphics/graphics_mesh_object_driver.cpp" line="202"/>
+        <location filename="../src/graphics/graphics_object_driver_mesh.cpp" line="202"/>
         <source>edgeColor</source>
         <translation>Edge Color</translation>
     </message>
     <message>
-        <location filename="../src/graphics/graphics_mesh_object_driver.cpp" line="203"/>
+        <location filename="../src/graphics/graphics_object_driver_mesh.cpp" line="203"/>
         <source>showEdges</source>
         <translation>Show Edges</translation>
     </message>
     <message>
-        <location filename="../src/graphics/graphics_mesh_object_driver.cpp" line="204"/>
+        <location filename="../src/graphics/graphics_object_driver_mesh.cpp" line="204"/>
         <source>showNodes</source>
         <translation>Show Nodes</translation>
     </message>
@@ -1359,22 +1359,22 @@ If activated, deflection used for the polygonalisation of each edge will be `Cho
 <context>
     <name>Mayo::GraphicsShapeObjectDriver</name>
     <message>
-        <location filename="../src/graphics/graphics_shape_object_driver.cpp" line="33"/>
+        <location filename="../src/graphics/graphics_object_driver_shape.cpp" line="33"/>
         <source>Shape_Wireframe</source>
         <translation>[Shape] Wireframe</translation>
     </message>
     <message>
-        <location filename="../src/graphics/graphics_shape_object_driver.cpp" line="34"/>
+        <location filename="../src/graphics/graphics_object_driver_shape.cpp" line="34"/>
         <source>Shape_HiddenLineRemoval</source>
         <translation>[Shape] Hidden Line Removal</translation>
     </message>
     <message>
-        <location filename="../src/graphics/graphics_shape_object_driver.cpp" line="35"/>
+        <location filename="../src/graphics/graphics_object_driver_shape.cpp" line="35"/>
         <source>Shape_Shaded</source>
         <translation>[Shape] Shaded</translation>
     </message>
     <message>
-        <location filename="../src/graphics/graphics_shape_object_driver.cpp" line="36"/>
+        <location filename="../src/graphics/graphics_object_driver_shape.cpp" line="36"/>
         <source>Shape_ShadedWithFaceBoundary</source>
         <translation>[Shape] Shaded With Edges</translation>
     </message>

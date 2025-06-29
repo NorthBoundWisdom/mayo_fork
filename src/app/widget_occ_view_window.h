@@ -1,6 +1,6 @@
 // --
 // -- Copy from $OCC7.5.0/samples/qt/Common/src/OcctWindow.h
-// -- Don't include this header, use occt_window.h instead
+// -- Don't include this header, use widget_occ_view_window.h instead
 // --
 #ifndef OcctWindow_H
 #define OcctWindow_H
@@ -44,7 +44,7 @@ public:
     virtual void Destroy();
 
     //! Destructor
-    ~OcctWindow()
+    ~OcctWindow() override
     {
         Destroy();
     }
@@ -56,11 +56,7 @@ public:
     Aspect_Drawable NativeParentHandle() const override;
 
     //! Applies the resizing to the window <me>
-#if OCC_VERSION_HEX >= 0x070500
     Aspect_TypeOfResize DoResize() override;
-#else
-    Aspect_TypeOfResize DoResize() const override;
-#endif
 
     //! Returns True if the window <me> is opened
     //! and False if the window is closed.

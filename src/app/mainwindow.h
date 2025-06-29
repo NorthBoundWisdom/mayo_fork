@@ -35,7 +35,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(GuiApplication *guiApp, QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
     void openDocumentsFromList(Span<const FilePath> listFilePath);
 

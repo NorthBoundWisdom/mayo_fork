@@ -4,7 +4,7 @@
 ** See license at https://github.com/fougue/mayo/blob/master/LICENSE.txt
 ****************************************************************************/
 
-#include "graphics_shape_object_driver.h"
+#include "graphics_object_driver_shape.h"
 
 #include <AIS_ConnectedInteractive.hxx>
 #include <AIS_DisplayMode.hxx>
@@ -14,10 +14,7 @@
 #include <V3d_Viewer.hxx>
 #include <XCAFPrs_AISObject.hxx>
 
-#include "base/brep_utils.h"
-#include "base/caf_utils.h"
 #include "base/label_data.h"
-#include "base/triangulation_annex_data.h"
 #include "base/xcaf.h"
 
 #include "graphics_utils.h"

@@ -13,8 +13,7 @@
 #include "base/occ_handle.h"
 #include "base/signal.h"
 
-#include "graphics_object_ptr.h"
-#include "graphics_owner_ptr.h"
+#include "graphics_typedef.h"
 
 namespace Mayo
 {
@@ -124,7 +123,7 @@ private:
     AIS_InteractiveContext *aisContextPtr() const;
 
     class Private;
-    Private *const d = nullptr;
+    Private *const p_context = nullptr;
 };
 
 class GraphicsSceneRedrawBlocker
@@ -161,7 +160,7 @@ void GraphicsScene::foreachActiveSelectionMode(const GraphicsObjectPtr &object, 
 {
     TColStd_ListOfInteger listMode;
     this->aisContextPtr()->ActivatedModes(object, listMode);
-    for (GraphicsObjectSelectionMode mode : listMode)
+    for (int mode : listMode)
         fn(mode);
 }
 

@@ -13,7 +13,7 @@
 #include "base/io_writer.h"
 #include "base/settings.h"
 #include "base/unit_system.h"
-#include "graphics/graphics_mesh_object_driver.h"
+#include "graphics/graphics_object_driver_mesh.h"
 
 #include "app_module.h"
 

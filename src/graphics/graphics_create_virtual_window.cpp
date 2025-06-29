@@ -13,17 +13,12 @@
 
 #include "base/global.h"
 
-#ifdef MAYO_OS_WINDOWS
-#include <windows.h>
-#endif
-
-#include <Aspect_DisplayConnection.hxx>
-#include <Graphic3d_GraphicDriver.hxx>
-
-#include "base/occ_handle.h"
 #if defined(MAYO_OS_WINDOWS)
+#include <windows.h>
+
 #include <WNT_WClass.hxx>
 #include <WNT_Window.hxx>
+
 #elif defined(MAYO_OS_MAC)
 #include <Cocoa_Window.hxx>
 #elif defined(MAYO_OS_ANDROID)
@@ -31,6 +26,11 @@
 #else
 #include <Xw_Window.hxx>
 #endif
+
+#include <Aspect_DisplayConnection.hxx>
+#include <Graphic3d_GraphicDriver.hxx>
+
+#include "base/occ_handle.h"
 
 namespace Mayo
 {
@@ -46,12 +46,13 @@ namespace Mayo
  * @return OccHandle<Aspect_Window> 返回创建的虚拟窗口句柄
  */
 OccHandle<Aspect_Window>
-graphicsCreateVirtualWindow([[maybe_unused]] const OccHandle<Graphic3d_GraphicDriver> &gfxDriver,
-                            int wndWidth, int wndHeight)
+graphicsCreateVirtualWindow(const OccHandle<Graphic3d_GraphicDriver> &gfxDriver, int wndWidth,
+                            int wndHeight)
 {
 #if defined(MAYO_OS_WINDOWS)
     // Create a "virtual" WNT window being a pure WNT window redefined to be never
     // shown
+    (void)gfxDriver;
     static OccHandle<WNT_WClass> wClass;
     if (wClass.IsNull())
     {

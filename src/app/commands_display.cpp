@@ -68,7 +68,7 @@ CommandChangeProjection::CommandChangeProjection(IAppContext *context)
                                  l_action == m_actionOrtho ?
                                      Graphic3d_Camera::Projection_Orthographic :
                                      Graphic3d_Camera::Projection_Perspective);
-                             guiDoc->graphicsView().redraw();
+                             guiDoc->graphicsScene()->redraw(guiDoc->v3dView());
                          }
                      });
 
@@ -156,7 +156,7 @@ void CommandChangeDisplayMode::recreateMenuDisplayMode()
                          [=](QAction *action)
                          {
                              guiDoc->setActiveDisplayMode(driver, action->data().toInt());
-                             guiDoc->graphicsView().redraw();
+                             guiDoc->graphicsScene()->redraw(guiDoc->v3dView());
                          });
     }
 }
@@ -219,8 +219,8 @@ void CommandTogglePerformanceStats::execute()
     GuiDocument *guiDoc = this->currentGuiDocument();
     if (guiDoc)
     {
-        CppUtils::toggle(guiDoc->graphicsView()->ChangeRenderingParams().ToShowStats);
-        guiDoc->graphicsView().redraw();
+        CppUtils::toggle(guiDoc->v3dView()->ChangeRenderingParams().ToShowStats);
+        guiDoc->graphicsScene()->redraw(guiDoc->v3dView());
     }
 }
 

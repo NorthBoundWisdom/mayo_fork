@@ -40,18 +40,19 @@ QPixmap colorSquarePixmap(const QColor &color)
 
 } // namespace
 
-WidgetGrid::WidgetGrid(GraphicsViewPtr viewPtr, QWidget *parent)
+WidgetGrid::WidgetGrid(GraphicsScene *scene, OccHandle<V3d_View> view, QWidget *parent)
     : QWidget(parent)
     , m_ui(new Ui_WidgetGrid)
-    , m_viewPtr(viewPtr)
+    , m_scene(scene)
+    , m_view(view)
 {
-    const OccHandle<V3d_Viewer> &viewer = viewPtr->Viewer();
+    const OccHandle<V3d_Viewer> &viewer = m_view->Viewer();
 
     // Intial configuration
     m_ui->setupUi(this);
 
     constexpr double maxFloat64 = std::numeric_limits<double>::max();
-    const double valueEditorMaxWidth = m_ui->edit_RectSizeX->fontMetrics().averageCharWidth() * 15;
+    const int valueEditorMaxWidth = m_ui->edit_RectSizeX->fontMetrics().averageCharWidth() * 15;
     for (auto editor : this->findChildren<QDoubleSpinBox *>())
     {
         editor->setRange(-maxFloat64, maxFloat64);
@@ -169,24 +170,24 @@ WidgetGrid::WidgetGrid(GraphicsViewPtr viewPtr, QWidget *parent)
                      [=](int typeIndex)
                      {
                          m_ui->stack_Config->setCurrentIndex(typeIndex);
-                         auto gridColors = GraphicsUtils::V3dViewer_gridColors(viewer);
+                         auto l_gridColors = GraphicsUtils::V3dViewer_gridColors(viewer);
                          viewer->ActivateGrid(toGridType(m_ui->combo_Type->currentIndex()),
                                               toGridDrawMode(m_ui->combo_DrawMode->currentIndex()));
-                         GraphicsUtils::V3dViewer_setGridColors(viewer, gridColors);
-                         m_viewPtr.redraw();
+                         GraphicsUtils::V3dViewer_setGridColors(viewer, l_gridColors);
+                         m_scene->redraw(m_view);
                      });
     QObject::connect(m_ui->combo_Plane, sigComboBoxActivated_int, this,
                      [=](int planeIndex)
                      {
                          viewer->SetPrivilegedPlane(toPlaneAxis(planeIndex));
-                         m_viewPtr.redraw();
+                         m_scene->redraw(m_view);
                      });
     QObject::connect(m_ui->combo_DrawMode, sigComboBoxActivated_int, this,
                      [=](int modeIndex)
                      {
                          GraphicsUtils::V3dViewer_grid(viewer)->SetDrawMode(
                              toGridDrawMode(modeIndex));
-                         m_viewPtr.redraw();
+                         m_scene->redraw(m_view);
                      });
     QObject::connect(m_ui->btn_Config, &QToolButton::clicked, this,
                      [=](bool on)
@@ -280,7 +281,7 @@ const gp_Ax2 &WidgetGrid::toPlaneAxis(int comboBoxItemIndex)
 
 void WidgetGrid::activateGrid(bool on)
 {
-    const OccHandle<V3d_Viewer> &viewer = m_viewPtr->Viewer();
+    const OccHandle<V3d_Viewer> &viewer = m_view->Viewer();
     if (on)
     {
         viewer->ActivateGrid(toGridType(m_ui->combo_Type->currentIndex()),
@@ -291,7 +292,7 @@ void WidgetGrid::activateGrid(bool on)
         viewer->DeactivateGrid();
     }
 
-    m_viewPtr.redraw();
+    m_scene->redraw(m_view);
     m_ui->combo_Plane->setEnabled(on);
     m_ui->widget_Main->setEnabled(on);
 }
@@ -300,7 +301,7 @@ void WidgetGrid::applyGridParams()
 {
     auto fnCorrectedGridStep = [](double gridStep)
     { return !qFuzzyIsNull(gridStep) ? gridStep : 0.01; };
-    const OccHandle<V3d_Viewer> &viewer = m_viewPtr->Viewer();
+    const OccHandle<V3d_Viewer> &viewer = m_view->Viewer();
     auto gridType = toGridType(m_ui->combo_Type->currentIndex());
     if (gridType == Aspect_GT_Rectangular)
     {
@@ -319,12 +320,12 @@ void WidgetGrid::applyGridParams()
             UnitSystem::radians(m_ui->edit_CircRotation->value() * Quantity_Degree));
     }
 
-    m_viewPtr.redraw();
+    m_scene->redraw(m_view);
 }
 
 void WidgetGrid::applyGridGraphicsParams()
 {
-    const OccHandle<V3d_Viewer> &viewer = m_viewPtr->Viewer();
+    const OccHandle<V3d_Viewer> &viewer = m_view->Viewer();
     auto gridType = toGridType(m_ui->combo_Type->currentIndex());
     if (gridType == Aspect_GT_Rectangular)
     {
@@ -338,12 +339,12 @@ void WidgetGrid::applyGridGraphicsParams()
                                              m_ui->edit_RectOffset->value());
     }
 
-    m_viewPtr.redraw();
+    m_scene->redraw(m_view);
 }
 
 void WidgetGrid::chooseGridColor(GridColorType colorType)
 {
-    const OccHandle<V3d_Viewer> &viewer = m_viewPtr->Viewer();
+    const OccHandle<V3d_Viewer> &viewer = m_view->Viewer();
     auto gridColors = GraphicsUtils::V3dViewer_gridColors(viewer);
     // Helper function to apply some base/tenth grid color
     auto fnApplyGridColor = [=](const Quantity_Color &color)
@@ -358,7 +359,7 @@ void WidgetGrid::chooseGridColor(GridColorType colorType)
             GraphicsUtils::V3dViewer_setGridColors(viewer, {gridColors.base, color});
         }
 
-        m_viewPtr.redraw();
+        m_scene->redraw(m_view);
     };
 
     // Setup dialog to select a color
@@ -391,13 +392,13 @@ void WidgetGrid::chooseGridColor(GridColorType colorType)
 
 void WidgetGrid::enableGridColorTenth(bool on)
 {
-    const OccHandle<V3d_Viewer> &viewer = m_viewPtr->Viewer();
+    const OccHandle<V3d_Viewer> &viewer = m_view->Viewer();
     m_ui->label_ColorTenth->setEnabled(on);
     m_ui->btn_ColorTenth->setEnabled(on);
     auto gridColors = GraphicsUtils::V3dViewer_gridColors(viewer);
     const auto gridColorTenth = on ? m_gridColorTenth : gridColors.base;
     GraphicsUtils::V3dViewer_setGridColors(viewer, {gridColors.base, gridColorTenth});
-    m_viewPtr.redraw();
+    m_scene->redraw(m_view);
 }
 
 } // namespace Mayo

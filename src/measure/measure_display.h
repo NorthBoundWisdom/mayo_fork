@@ -19,7 +19,7 @@
 #include <gp_Circ.hxx>
 
 #include "base/string_conv.h"
-#include "graphics/graphics_object_ptr.h"
+#include "graphics/graphics_typedef.h"
 
 #include "measure_tool.h"
 

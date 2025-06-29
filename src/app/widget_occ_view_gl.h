@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <functional>
-
 #include <QOpenGLWidget>
 #include <QtWidgets/QWidget>
 
@@ -27,6 +25,8 @@ namespace Mayo
 class QOpenGLWidgetOccView : public QOpenGLWidget, public IWidgetOccView
 {
 public:
+    ~QOpenGLWidgetOccView() override;
+
     void redraw() override;
     QWidget *widget() override
     {

@@ -32,7 +32,7 @@
 #include "base/mesh_utils.h"
 #include "base/occ_handle.h"
 #include "base/text_id.h"
-#include "graphics/graphics_shape_object_driver.h"
+#include "graphics/graphics_object_driver_shape.h"
 #if OCC_VERSION_HEX >= 0x070500
 #include <PrsDim_AngleDimension.hxx>
 #else
@@ -163,14 +163,13 @@ gp_Pnt computeShapeCenter(const TopoDS_Shape &shape)
 }
 } // namespace
 
-Span<const GraphicsObjectSelectionMode> MeasureToolBRep::selectionModes(MeasureType type) const
+Span<const int> MeasureToolBRep::selectionModes(MeasureType type) const
 {
     switch (type)
     {
     case MeasureType::VertexPosition:
     {
-        static const GraphicsObjectSelectionMode modes[] = {
-            AIS_Shape::SelectionMode(TopAbs_VERTEX)};
+        static const int modes[] = {AIS_Shape::SelectionMode(TopAbs_VERTEX)};
         return modes;
     }
     case MeasureType::CircleCenter:
@@ -178,28 +177,27 @@ Span<const GraphicsObjectSelectionMode> MeasureToolBRep::selectionModes(MeasureT
     case MeasureType::Length:
     case MeasureType::Angle:
     {
-        static const GraphicsObjectSelectionMode modes[] = {AIS_Shape::SelectionMode(TopAbs_EDGE)};
+        static const int modes[] = {AIS_Shape::SelectionMode(TopAbs_EDGE)};
         return modes;
     }
     case MeasureType::MinDistance:
     case MeasureType::CenterDistance:
     {
-        static const GraphicsObjectSelectionMode modes[] = {AIS_Shape::SelectionMode(TopAbs_VERTEX),
-                                                            AIS_Shape::SelectionMode(TopAbs_EDGE),
-                                                            AIS_Shape::SelectionMode(TopAbs_FACE)};
+        static const int modes[] = {AIS_Shape::SelectionMode(TopAbs_VERTEX),
+                                    AIS_Shape::SelectionMode(TopAbs_EDGE),
+                                    AIS_Shape::SelectionMode(TopAbs_FACE)};
         return modes;
     }
     case MeasureType::Area:
     {
-        static const GraphicsObjectSelectionMode modes[] = {AIS_Shape::SelectionMode(TopAbs_FACE)};
+        static const int modes[] = {AIS_Shape::SelectionMode(TopAbs_FACE)};
         return modes;
     }
     case MeasureType::BoundingBox:
     {
-        static const GraphicsObjectSelectionMode modes[] = {
-            // AIS_Shape::SelectionMode(TopAbs_FACE),
-            // AIS_Shape::SelectionMode(TopAbs_SOLID)
-            AIS_Shape::SelectionMode(TopAbs_COMPOUND)};
+        static const int modes[] = {// AIS_Shape::SelectionMode(TopAbs_FACE),
+                                    // AIS_Shape::SelectionMode(TopAbs_SOLID)
+                                    AIS_Shape::SelectionMode(TopAbs_COMPOUND)};
         return modes;
     }
     default:

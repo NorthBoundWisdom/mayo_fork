@@ -247,7 +247,7 @@ void WidgetMeasure::onMeasureTypeChanged(int id)
             gfxScene->deactivateObjectSelection(gfxObject);
             if (m_tool)
             {
-                for (GraphicsObjectSelectionMode mode : m_tool->selectionModes(measureType))
+                for (int mode : m_tool->selectionModes(measureType))
                     gfxScene->activateObjectSelection(gfxObject, mode);
             }
         });
@@ -415,13 +415,13 @@ void WidgetMeasure::onDocumentEntityAdded(TreeNodeId entityNodeId)
     if (measureType == MeasureType::None)
         return;
 
-    m_guiDoc->foreachGraphicsObject(
-        entityNodeId,
-        [=](const GraphicsObjectPtr &gfxObject)
-        {
-            for (GraphicsObjectSelectionMode mode : m_tool->selectionModes(measureType))
-                m_guiDoc->graphicsScene()->activateObjectSelection(gfxObject, mode);
-        });
+    m_guiDoc->foreachGraphicsObject(entityNodeId,
+                                    [=](const GraphicsObjectPtr &gfxObject)
+                                    {
+                                        for (int mode : m_tool->selectionModes(measureType))
+                                            m_guiDoc->graphicsScene()->activateObjectSelection(
+                                                gfxObject, mode);
+                                    });
 }
 
 void WidgetMeasure::updateMessagePanel()

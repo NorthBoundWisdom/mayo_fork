@@ -6,10 +6,6 @@
 
 #include "graphics_utils.h"
 
-#include <algorithm>
-#include <cstdlib>
-#include <cstring>
-
 #include <AIS_InteractiveContext.hxx>
 #include <AIS_InteractiveObject.hxx>
 #include <Aspect_DisplayConnection.hxx>
@@ -25,10 +21,10 @@
 #include <V3d_View.hxx>
 #include <V3d_Viewer.hxx>
 
-#include "base/bnd_utils.h"
 #include "base/global.h"
 #include "base/math_utils.h"
 #include "base/tkernel_utils.h"
+
 
 namespace Mayo
 {
@@ -162,11 +158,7 @@ GraphicsUtils::AisObject_contextPtr(const OccHandle<AIS_InteractiveObject> &obje
     if (!object)
         return nullptr;
 
-#if OCC_VERSION_HEX >= OCC_VERSION_CHECK(7, 4, 0)
     return object->InteractiveContext();
-#else
-    return object->GetContext().get();
-#endif
 }
 
 bool GraphicsUtils::AisObject_isVisible(const OccHandle<AIS_InteractiveObject> &object)

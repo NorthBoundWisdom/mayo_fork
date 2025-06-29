@@ -4,21 +4,17 @@
 ** See license at https://github.com/fougue/mayo/blob/master/LICENSE.txt
 ****************************************************************************/
 
-// --
-// NOTE
-// This file isolates inclusion of <Aspect_DisplayConnection.hxx> which is
-// problematic on X11/Linux <X.h> #defines constants like "None" which causes
-// name clash with GuiDocument::ViewTrihedronMode::None
-// --
+#pragma once
 
-#include <functional>
-
-#include <Aspect_DisplayConnection.hxx>
-#include <OpenGl_GraphicDriver.hxx>
+#include <AIS_InteractiveObject.hxx>
+#include <SelectMgr_EntityOwner.hxx>
 
 #include "base/occ_handle.h"
 
+
 namespace Mayo
 {
+using GraphicsOwnerPtr = OccHandle<SelectMgr_EntityOwner>;
+using GraphicsObjectPtr = OccHandle<AIS_InteractiveObject>;
 
 } // namespace Mayo

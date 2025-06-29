@@ -18,7 +18,7 @@ namespace Mayo
 class MeasureToolBRep : public IMeasureTool
 {
 public:
-    Span<const GraphicsObjectSelectionMode> selectionModes(MeasureType type) const override;
+    Span<const int> selectionModes(MeasureType type) const override;
     bool supports(const GraphicsObjectPtr &object) const override;
     bool supports(MeasureType type) const override;
 

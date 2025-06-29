@@ -16,7 +16,7 @@
 #include "base/property.h"
 #include "base/span.h"
 
-#include "graphics_object_ptr.h"
+#include "graphics_typedef.h"
 
 namespace Mayo
 {

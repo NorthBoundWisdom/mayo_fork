@@ -20,9 +20,9 @@
 #include "base/meta_enum.h"
 #include "base/point_cloud_data.h"
 #include "base/xcaf.h"
-#include "graphics/graphics_mesh_object_driver.h"
-#include "graphics/graphics_point_cloud_object_driver.h"
-#include "graphics/graphics_shape_object_driver.h"
+#include "graphics/graphics_object_driver_mesh.h"
+#include "graphics/graphics_object_driver_point_cloud.h"
+#include "graphics/graphics_object_driver_shape.h"
 #include "qtcommon/qstring_conv.h"
 
 namespace Mayo

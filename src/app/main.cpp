@@ -25,12 +25,11 @@
 
 #include <fmt/format.h>
 
-#include "base/application.h"
 #include "base/io_system.h"
 #include "base/settings.h"
-#include "graphics/graphics_mesh_object_driver.h"
-#include "graphics/graphics_point_cloud_object_driver.h"
-#include "graphics/graphics_shape_object_driver.h"
+#include "graphics/graphics_object_driver_mesh.h"
+#include "graphics/graphics_object_driver_point_cloud.h"
+#include "graphics/graphics_object_driver_shape.h"
 #include "graphics/graphics_utils.h"
 #include "gui/gui_application.h"
 #include "io_assimp/io_assimp.h"
@@ -155,56 +154,6 @@ Theme *mayoTheme()
     return globalTheme.get();
 }
 
-// Set OpenCascade environment variables defined in a settings file(INI format)
-static void initOpenCascadeEnvironment(const FilePath &settingsFilepath)
-{
-    const QString strSettingsFilepath = filepathTo<QString>(settingsFilepath);
-    if (!filepathExists(settingsFilepath) /* TODO Check readable */)
-    {
-        qDebug().noquote() << Main::tr("OpenCascade settings file doesn't exist or "
-                                       "is not readable [path=%1]")
-                                  .arg(strSettingsFilepath);
-        return;
-    }
-
-    const QSettings occSettings(strSettingsFilepath, QSettings::IniFormat);
-    if (occSettings.status() != QSettings::NoError)
-    {
-        qDebug().noquote() << Main::tr("OpenCascade settings file could not be "
-                                       "loaded with QSettings [path=%1]")
-                                  .arg(strSettingsFilepath);
-        return;
-    }
-
-    // Process options
-    for (const char *varName : Application::envOpenCascadeOptions())
-    {
-        const QLatin1String qVarName(varName);
-        if (occSettings.contains(qVarName))
-        {
-            const QString strValue = occSettings.value(qVarName).toString();
-            qputenv(varName, strValue.toUtf8());
-            qDebug().noquote() << QString("%1 = %2").arg(qVarName).arg(strValue);
-        }
-    }
-
-    // Process paths
-    for (const char *varName : Application::envOpenCascadePaths())
-    {
-        const QLatin1String qVarName(varName);
-        if (occSettings.contains(qVarName))
-        {
-            QString strPath = occSettings.value(qVarName).toString();
-            if (QFileInfo(strPath).isRelative())
-                strPath = QCoreApplication::applicationDirPath() + QDir::separator() + strPath;
-
-            strPath = QDir::toNativeSeparators(strPath);
-            qputenv(varName, strPath.toUtf8());
-            qDebug().noquote() << QString("%1 = %2").arg(qVarName).arg(strPath);
-        }
-    }
-}
-
 // Helper to query the OpenGL version string
 [[maybe_unused]] static std::string queryGlVersionString()
 {
@@ -224,25 +173,7 @@ static void initOpenCascadeEnvironment(const FilePath &settingsFilepath)
     return reinterpret_cast<const char *>(glVersion);
 }
 
-// Helper to parse a string containing a semantic version eg "4.6.5 CodeNamed"
-// Note: only major and minor versions are detected
-[[maybe_unused]] static QVersionNumber parseSemanticVersionString(std::string_view strVersion)
-{
-    if (strVersion.empty())
-        return {};
-
-    const char *ptrVersionStart = strVersion.data();
-    const char *ptrVersionEnd = ptrVersionStart + strVersion.size();
-    const int versionMajor = std::atoi(ptrVersionStart);
-    int versionMinor = 0;
-    auto ptrDot = std::find(ptrVersionStart, ptrVersionEnd, '.');
-    if (ptrDot != ptrVersionEnd)
-        versionMinor = std::atoi(ptrDot + 1);
-
-    return QVersionNumber(versionMajor, versionMinor);
-}
-
-Thumbnail createGuiDocumentThumbnail(GuiDocument *guiDoc, QSize size)
+static Thumbnail createGuiDocumentThumbnail(GuiDocument *guiDoc, QSize size)
 {
     Thumbnail thumbnail;
 
@@ -334,9 +265,6 @@ static int runApp(QCoreApplication *qtApp)
     // Initialize Base application
     auto app = appModule->application();
     TextId::addTranslatorFunction(&qtAppTranslate); // Set Qt i18n backend
-#ifdef MAYO_OS_WINDOWS
-    initOpenCascadeEnvironment("opencascade.conf");
-#endif
 
     // Initialize Gui application
     auto guiApp = new GuiApplication(app);
@@ -426,32 +354,11 @@ static int runApp(QCoreApplication *qtApp)
     appModule->settings()->save();
     return code;
 }
-
-// Defined in tests/runtests.cpp
-int runTests(int argc, char *argv[]);
-
 } // namespace Mayo
 
 int main(int argc, char *argv[])
 {
     qInstallMessageHandler(&Mayo::LogMessageHandler::qtHandler);
-
-    // Helper function to check if application arguments contain any option listed
-    // in 'listOption' IMPORTANT: capture by reference, because QApplication
-    // constructor may alter argc(due to
-    //            parsing of arguments)
-    [[maybe_unused]] auto fnArgsContainAnyOf = [&](std::initializer_list<const char *> listOption)
-    {
-        for (int i = 1; i < argc; ++i)
-        {
-            for (const char *option : listOption)
-            {
-                if (std::strcmp(argv[i], option) == 0)
-                    return true;
-            }
-        }
-        return false;
-    };
 
     // OpenCascade TKOpenGl depends on XLib for Linux(excepting Android) and BSD
     // systems(excepting macOS) See for example implementation of
@@ -460,10 +367,10 @@ int main(int argc, char *argv[])
     // https://github.com/fougue/mayo/issues/178) As a workaround the Qt platform
     // is forced to xcb
 #if (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || (defined(Q_OS_BSD4) && !defined(Q_OS_MACOS))
-    if (!qEnvironmentVariableIsSet("QT_QPA_PLATFORM") && !fnArgsContainAnyOf({"-platform"}))
+    if (!qEnvironmentVariableIsSet("QT_QPA_PLATFORM"))
         qputenv("QT_QPA_PLATFORM", "xcb");
 #elif defined(Q_OS_HAIKU)
-    if (!qEnvironmentVariableIsSet("QT_QPA_PLATFORM") && !fnArgsContainAnyOf({"-platform"}))
+    if (!qEnvironmentVariableIsSet("QT_QPA_PLATFORM"))
         qputenv("QT_QPA_PLATFORM", "haiku");
 #endif
 
@@ -477,12 +384,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("Mayo");
     QCoreApplication::setApplicationVersion(QString::fromUtf8(Mayo::strVersion));
     QApplication app(argc, argv);
-
-    // Handle unit tests
-#ifdef MAYO_WITH_TESTS
-    if (fnArgsContainAnyOf({"--runtests"}))
-        return Mayo::runTests(argc, argv);
-#endif
 
     // Run Mayo application GUI
     return Mayo::runApp(&app);

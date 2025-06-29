@@ -23,7 +23,6 @@
 #include "base/occ_handle.h"
 #include "graphics/graphics_utils.h"
 
-#include "occt_window.h"
 #include "widget_occ_view_gl.h"
 
 namespace Mayo
@@ -75,20 +74,6 @@ void QOpenGLWidgetOccView_createOpenGlContext(
         fnCallback(glCtx->RenderingContext());
 }
 
-OccHandle<Graphic3d_GraphicDriver> QOpenGLWidgetOccView_createCompatibleGraphicsDriver()
-{
-    auto gfxDriver = new OpenGl_GraphicDriver(GraphicsUtils::AspectDisplayConnection_create(),
-                                              false /*dontInit*/);
-    // Let QOpenGLWidget manage buffer swap
-    gfxDriver->ChangeOptions().buffersNoSwap = true;
-    // Don't write into alpha channel
-    gfxDriver->ChangeOptions().buffersOpaqueAlpha = true;
-    // Offscreen FBOs should be always used
-    gfxDriver->ChangeOptions().useSystemBuffer = false;
-
-    return gfxDriver;
-}
-
 bool QOpenGLWidgetOccView_wrapFrameBuffer(const OccHandle<Graphic3d_GraphicDriver> &gfxDriver)
 {
     // Wrap FBO created by QOpenGLWidget
@@ -122,17 +107,12 @@ Graphic3d_Vec2i QOpenGLWidgetOccView_getDefaultframeBufferViewportSize(
     return driver->GetSharedContext()->DefaultFrameBuffer()->GetVPSize();
 }
 
-OccHandle<Graphic3d_GraphicDriver> QWidgetOccView_createCompatibleGraphicsDriver()
-{
-    return new OpenGl_GraphicDriver(GraphicsUtils::AspectDisplayConnection_create());
-}
-
 OccHandle<Aspect_NeutralWindow> createNativeWindow([[maybe_unused]] QWidget *widget)
 {
     auto window = new Aspect_NeutralWindow;
     // On non-Windows systems Aspect_Drawable is aliased to 'unsigned long' so
     // can't init with nullptr
-    Aspect_Drawable nativeWin = 0;
+    Aspect_Drawable nativeWin (0);
 #ifdef Q_OS_WIN
     HDC wglDevCtx = wglGetCurrentDC();
     HWND wglWin = WindowFromDC(wglDevCtx);
@@ -169,6 +149,11 @@ QOpenGLWidgetOccView::QOpenGLWidgetOccView(const OccHandle<V3d_View> &view, QWid
     this->setFormat(glFormat);
 }
 
+QOpenGLWidgetOccView::~QOpenGLWidgetOccView()
+{
+    std::cout << "QOpenGLWidgetOccView::~QOpenGLWidgetOccView()" << std::endl;
+}
+
 void QOpenGLWidgetOccView::redraw()
 {
     this->update();
@@ -181,7 +166,16 @@ QOpenGLWidgetOccView *QOpenGLWidgetOccView::create(const OccHandle<V3d_View> &vi
 
 OccHandle<Graphic3d_GraphicDriver> QOpenGLWidgetOccView::createCompatibleGraphicsDriver()
 {
-    return QOpenGLWidgetOccView_createCompatibleGraphicsDriver();
+    auto gfxDriver = new OpenGl_GraphicDriver(GraphicsUtils::AspectDisplayConnection_create(),
+                                              false /*dontInit*/);
+    // Let QOpenGLWidget manage buffer swap
+    gfxDriver->ChangeOptions().buffersNoSwap = true;
+    // Don't write into alpha channel
+    gfxDriver->ChangeOptions().buffersOpaqueAlpha = true;
+    // Offscreen FBOs should be always used
+    gfxDriver->ChangeOptions().useSystemBuffer = false;
+
+    return gfxDriver;
 }
 
 void QOpenGLWidgetOccView::initializeGL()

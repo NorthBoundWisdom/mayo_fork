@@ -15,7 +15,9 @@
 #include <Graphic3d_TextureMap.hxx>
 
 #include "base/occ_handle.h"
-#include "graphics/graphics_view_ptr.h"
+#include "graphics/graphics_scene.h"
+
+
 class QAbstractButton;
 class QAbstractSlider;
 class QCheckBox;
@@ -30,8 +32,8 @@ class WidgetClipPlanes : public QWidget
     Q_OBJECT
 
 public:
-    WidgetClipPlanes(GraphicsViewPtr view, QWidget *parent = nullptr);
-    ~WidgetClipPlanes();
+    WidgetClipPlanes(GraphicsScene *scene, OccHandle<V3d_View> view, QWidget *parent = nullptr);
+    ~WidgetClipPlanes() override;
 
     void setRanges(const Bnd_Box &box);
     void setClippingOn(bool on);
@@ -69,7 +71,10 @@ private:
     void createPlaneCappingTexture();
 
     class Ui_WidgetClipPlanes *m_ui;
-    GraphicsViewPtr m_view;
+
+    GraphicsScene *m_scene = nullptr;
+    OccHandle<V3d_View> m_view;
+
     std::vector<ClipPlaneData> m_vecClipPlaneData;
     Bnd_Box m_bndBox;
     OccHandle<Graphic3d_TextureMap> m_textureCapping;

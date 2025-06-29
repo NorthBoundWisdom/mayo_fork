@@ -6,8 +6,15 @@
 
 #include "mainwindow.h"
 
-#include "base/application.h"
-#include "base/global.h"
+#include <QtDebug>
+
+#include <QtGui/QFontMetrics>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QScrollArea>
+#include <QtWidgets/QStyle>
+
 #include "gui/gui_application.h"
 #include "gui/gui_document.h"
 #include "qtcommon/qstring_conv.h"
@@ -28,19 +35,6 @@
 #include "widget_main_control.h"
 #include "widget_main_home.h"
 #include "widget_message_indicator.h"
-
-#ifdef Q_OS_WIN
-#include "windows/win_taskbar_global_progress.h"
-#endif
-
-#include <QtDebug>
-
-#include <QtGui/QFontMetrics>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QStyle>
 
 namespace Mayo
 {
@@ -102,14 +96,6 @@ void MainWindow::showEvent(QShowEvent *event)
     }
 
     QMainWindow::showEvent(event);
-#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    constexpr Qt::FindChildOption findMode = Qt::FindDirectChildrenOnly;
-    auto winProgress = this->findChild<WinTaskbarGlobalProgress *>(QString(), findMode);
-    if (!winProgress)
-        winProgress = new WinTaskbarGlobalProgress(&m_taskMgr, this);
-
-    winProgress->setWindow(this->windowHandle());
-#endif
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -291,7 +277,7 @@ void MainWindow::onGuiDocumentErased(GuiDocument * /*guiDoc*/)
 
 // Async execution of a resizable message box dialog
 // Text is also selectable and displayed within a scroll area
-QDialog *
+static QDialog *
 runMessageBox(QMessageBox::Icon icon, QWidget *parentWidget, const QString &text,
               QDialogButtonBox::StandardButtons btns = QDialogButtonBox::StandardButton::Ok)
 {

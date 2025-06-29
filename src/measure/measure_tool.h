@@ -15,8 +15,7 @@
 
 #include "base/quantity.h"
 #include "base/span.h"
-#include "graphics/graphics_object_ptr.h"
-#include "graphics/graphics_owner_ptr.h"
+#include "graphics/graphics_typedef.h"
 
 #include "measure_type.h"
 
@@ -115,7 +114,7 @@ class IMeasureTool
 public:
     virtual ~IMeasureTool() = default;
 
-    virtual Span<const GraphicsObjectSelectionMode> selectionModes(MeasureType type) const = 0;
+    virtual Span<const int> selectionModes(MeasureType type) const = 0;
     virtual bool supports(const GraphicsObjectPtr &object) const = 0;
     virtual bool supports(MeasureType type) const = 0;
 

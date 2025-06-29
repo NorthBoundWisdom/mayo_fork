@@ -132,7 +132,6 @@ void WidgetOccViewController::setNavigationStyle(View3dNavigationStyle style)
 
 void WidgetOccViewController::redrawView()
 {
-    // V3dViewController::redrawView();
     m_occView->redraw();
 }
 
@@ -239,14 +238,14 @@ void WidgetOccViewController::handleKeyRelease(const QKeyEvent *event)
 void WidgetOccViewController::handleMouseButtonPress(const QMouseEvent *event)
 {
     m_inputSequence.push(event->button());
-    const QPoint currPos = m_occView->widget()->mapFromGlobal(QtGuiUtils::globalPosition(event));
+    const QPoint currPos = m_occView->widget()->mapFromGlobal(event->globalPosition().toPoint());
     m_prevPos = toPosition(currPos);
 }
 
 void WidgetOccViewController::handleMouseMove(const QMouseEvent *event)
 {
     const Position currPos =
-        toPosition(m_occView->widget()->mapFromGlobal(QtGuiUtils::globalPosition(event)));
+        toPosition(m_occView->widget()->mapFromGlobal(event->globalPosition().toPoint()));
     const Position prevPos = m_prevPos;
     m_prevPos = currPos;
     if (m_actionMatcher->matchRotation())
@@ -279,7 +278,7 @@ void WidgetOccViewController::handleMouseButtonRelease(const QMouseEvent *event)
     const bool hadDynamicAction = this->hasCurrentDynamicAction();
     if (this->isWindowZoomingStarted())
         this->windowZoom(
-            toPosition(m_occView->widget()->mapFromGlobal(QtGuiUtils::globalPosition(event))));
+            toPosition(m_occView->widget()->mapFromGlobal(event->globalPosition().toPoint())));
 
     this->stopDynamicAction();
     if (!hadDynamicAction)
@@ -539,5 +538,4 @@ bool WidgetOccViewController::InputSequence::equal(std::initializer_list<Input> 
 {
     return std::equal(m_inputs.cbegin(), m_inputs.cend(), other.begin(), other.end());
 }
-
 } // namespace Mayo

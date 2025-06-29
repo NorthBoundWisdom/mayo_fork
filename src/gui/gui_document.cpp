@@ -474,14 +474,12 @@ void GuiDocument::setViewTrihedronMode(ViewTrihedronMode mode)
         {
             auto aisViewCube = new AIS_ViewCube;
             aisViewCube->SetBoxColor(Quantity_NOC_GRAY75);
-            // aisViewCube->SetFixedAnimationLoop(false);
             aisViewCube->SetSize(55);
             aisViewCube->SetFontHeight(12);
             aisViewCube->SetAxesLabels("", "", "");
             aisViewCube->SetTransformPersistence(new Graphic3d_TransformPers(
                 Graphic3d_TMF_TriedronPers, m_viewTrihedronCorner, Graphic3d_Vec2i(85, 85)));
             m_gfxScene.addObject(aisViewCube);
-            // aisViewCube->Attributes()->DatumAspect()->LineAspect(Prs3d_DP_XAxis)->SetColor(Quantity_NOC_RED2);
             const OccHandle<Prs3d_DatumAspect> &datumAspect =
                 aisViewCube->Attributes()->DatumAspect();
             datumAspect->ShadingAspect(Prs3d_DP_XAxis)->SetColor(Quantity_NOC_RED2);

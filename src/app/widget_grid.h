@@ -8,7 +8,10 @@
 
 #include <QtWidgets/QWidget>
 
-#include "graphics/graphics_view_ptr.h"
+#include <V3d_View.hxx>
+
+#include "graphics/graphics_scene.h"
+
 class gp_Ax2;
 
 namespace Mayo
@@ -20,8 +23,8 @@ class WidgetGrid : public QWidget
     Q_OBJECT
 
 public:
-    WidgetGrid(GraphicsViewPtr viewPtr, QWidget *parent = nullptr);
-    ~WidgetGrid();
+    WidgetGrid(GraphicsScene *scene, OccHandle<V3d_View> view, QWidget *parent = nullptr);
+    ~WidgetGrid() override;
 
 signals:
     void sizeAdjustmentRequested();
@@ -44,8 +47,9 @@ private:
     void enableGridColorTenth(bool on);
 
     class Ui_WidgetGrid *m_ui = nullptr;
-    GraphicsViewPtr m_viewPtr;
     Quantity_Color m_gridColorTenth;
+    GraphicsScene *m_scene = nullptr;
+    OccHandle<V3d_View> m_view;
 };
 
 } // namespace Mayo

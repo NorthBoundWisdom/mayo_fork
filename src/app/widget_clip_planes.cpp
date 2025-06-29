@@ -16,19 +16,18 @@
 #include "base/bnd_utils.h"
 #include "base/math_utils.h"
 #include "base/settings.h"
-#include "graphics/graphics_texture2d.h"
 #include "graphics/graphics_utils.h"
 
 #include "app_module.h"
 #include "ui_widget_clip_planes.h"
 
-
 namespace Mayo
 {
 
-WidgetClipPlanes::WidgetClipPlanes(GraphicsViewPtr view, QWidget *parent)
+WidgetClipPlanes::WidgetClipPlanes(GraphicsScene *scene, OccHandle<V3d_View> view, QWidget *parent)
     : QWidget(parent)
     , m_ui(new Ui_WidgetClipPlanes)
+    , m_scene(scene)
     , m_view(view)
 {
     m_ui->setupUi(this);
@@ -62,7 +61,7 @@ WidgetClipPlanes::WidgetClipPlanes(GraphicsViewPtr view, QWidget *parent)
                 for (ClipPlaneData &data : m_vecClipPlaneData)
                     data.graphics->SetCapping(appModule->properties()->clipPlanesCappingOn);
 
-                m_view.redraw();
+                m_scene->redraw(m_view);
             }
             else if (property == &appModule->properties()->clipPlanesCappingHatchOn)
             {
@@ -73,7 +72,7 @@ WidgetClipPlanes::WidgetClipPlanes(GraphicsViewPtr view, QWidget *parent)
                 for (ClipPlaneData &data : m_vecClipPlaneData)
                     data.graphics->SetCappingTexture(hatchTexture);
 
-                m_view.redraw();
+                m_scene->redraw(m_view);
             }
         });
 
@@ -99,7 +98,7 @@ void WidgetClipPlanes::setRanges(const Bnd_Box &bndBox)
             data.ui.check_On->setChecked(false);
     }
 
-    m_view.redraw();
+    m_scene->redraw(m_view);
 }
 
 void WidgetClipPlanes::setClippingOn(bool on)
@@ -107,7 +106,7 @@ void WidgetClipPlanes::setClippingOn(bool on)
     for (ClipPlaneData &data : m_vecClipPlaneData)
         data.graphics->SetOn(on ? data.ui.check_On->isChecked() : false);
 
-    m_view.redraw();
+    m_scene->redraw(m_view);
 }
 
 void WidgetClipPlanes::connectUi(ClipPlaneData *data)
@@ -123,7 +122,7 @@ void WidgetClipPlanes::connectUi(ClipPlaneData *data)
                      {
                          ui.widget_Control->setEnabled(on);
                          this->setPlaneOn(gfx, on);
-                         m_view.redraw();
+                         m_scene->redraw(m_view);
                      });
 
     if (data->ui.customXDirSpin())
@@ -154,7 +153,7 @@ void WidgetClipPlanes::connectUi(ClipPlaneData *data)
                          const double dPct = ui.spinValueToSliderValue(pos);
                          posSlider->setValue(qRound(dPct));
                          GraphicsUtils::Gfx3dClipPlane_setPosition(gfx, pos);
-                         m_view.redraw();
+                         m_scene->redraw(m_view);
                      });
 
     QObject::connect(posSlider, &QSlider::valueChanged, this,
@@ -164,7 +163,7 @@ void WidgetClipPlanes::connectUi(ClipPlaneData *data)
                          [[maybe_unused]] QSignalBlocker sigBlock(posSpin);
                          posSpin->setValue(pos);
                          GraphicsUtils::Gfx3dClipPlane_setPosition(gfx, pos);
-                         m_view.redraw();
+                         m_scene->redraw(m_view);
                      });
 
     QObject::connect(ui.inverseBtn(), &QAbstractButton::clicked, this,
@@ -174,7 +173,7 @@ void WidgetClipPlanes::connectUi(ClipPlaneData *data)
                          GraphicsUtils::Gfx3dClipPlane_setNormal(gfx, invNormal);
                          GraphicsUtils::Gfx3dClipPlane_setPosition(gfx,
                                                                    data->ui.posSpin()->value());
-                         m_view.redraw();
+                         m_scene->redraw(m_view);
                      });
 
     // Custom plane normal
@@ -195,7 +194,7 @@ void WidgetClipPlanes::connectUi(ClipPlaneData *data)
                                  const auto bbc = BndBoxCoords::get(m_bndBox);
                                  this->setPlaneRange(data, MathUtils::planeRange(bbc, normal));
                                  GraphicsUtils::Gfx3dClipPlane_setNormal(gfx, normal);
-                                 m_view.redraw();
+                                 m_scene->redraw(m_view);
                              }
                          });
     };
@@ -221,7 +220,7 @@ void WidgetClipPlanes::connectUi(ClipPlaneData *data)
 void WidgetClipPlanes::setPlaneOn(const OccHandle<Graphic3d_ClipPlane> &plane, bool on)
 {
     plane->SetOn(on);
-    if (!GraphicsUtils::V3dView_hasClipPlane(m_view.v3dView(), plane))
+    if (!GraphicsUtils::V3dView_hasClipPlane(m_view, plane))
         m_view->AddClipPlane(plane);
 }
 
@@ -262,7 +261,7 @@ void WidgetClipPlanes::createPlaneCappingTexture()
         auto fileContentsData = reinterpret_cast<const Standard_Byte *>(fileContents.constData());
         auto imageCapping = makeOccHandle<Image_AlienPixMap>();
         imageCapping->Load(fileContentsData, fileContents.size(), filenameUtf8.constData());
-        m_textureCapping = new GraphicsTexture2D(imageCapping);
+        m_textureCapping = new Graphic3d_Texture2D(imageCapping);
         m_textureCapping->EnableModulate();
         m_textureCapping->EnableRepeat();
         m_textureCapping->GetParams()->SetScale(Graphic3d_Vec2(0.05f, -0.05f));

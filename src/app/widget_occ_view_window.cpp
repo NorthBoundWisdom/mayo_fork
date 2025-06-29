@@ -1,15 +1,7 @@
-#include "occt_window.h"
-
-// --
-// -- Copy from $OCC7.5.0/samples/qt/Common/src/OcctWindow.h
-// --
+#include "widget_occ_view_window.h"
 
 IMPLEMENT_STANDARD_RTTIEXT(OcctWindow, Aspect_Window)
 
-// =======================================================================
-// function : OcctWindow
-// purpose  :
-// =======================================================================
 OcctWindow::OcctWindow(QWidget *theWidget, const Quantity_NameOfColor theBackColor)
     : Aspect_Window()
     , myWidget(theWidget)
@@ -22,75 +14,43 @@ OcctWindow::OcctWindow(QWidget *theWidget, const Quantity_NameOfColor theBackCol
     myYBottom = qRound(scale * myWidget->rect().bottom());
 }
 
-// =======================================================================
-// function : Destroy
-// purpose  :
-// =======================================================================
 void OcctWindow::Destroy()
 {
     myWidget = NULL;
 }
 
-// =======================================================================
-// function : NativeParentHandle
-// purpose  :
-// =======================================================================
 Aspect_Drawable OcctWindow::NativeParentHandle() const
 {
     QWidget *aParentWidget = myWidget->parentWidget();
     if (aParentWidget != NULL)
         return (Aspect_Drawable)aParentWidget->winId();
     else
-        return 0;
+        return Aspect_Drawable(NULL);
 }
 
-// =======================================================================
-// function : NativeHandle
-// purpose  :
-// =======================================================================
 Aspect_Drawable OcctWindow::NativeHandle() const
 {
     return (Aspect_Drawable)myWidget->winId();
 }
 
-// =======================================================================
-// function : IsMapped
-// purpose  :
-// =======================================================================
 Standard_Boolean OcctWindow::IsMapped() const
 {
     return !(myWidget->isMinimized() || myWidget->isHidden());
 }
 
-// =======================================================================
-// function : Map
-// purpose  :
-// =======================================================================
 void OcctWindow::Map() const
 {
     myWidget->show();
     myWidget->update();
 }
 
-// =======================================================================
-// function : Unmap
-// purpose  :
-// =======================================================================
 void OcctWindow::Unmap() const
 {
     myWidget->hide();
     myWidget->update();
 }
 
-// =======================================================================
-// function : DoResize
-// purpose  :
-// =======================================================================
-#if OCC_VERSION_HEX >= 0x070500
 Aspect_TypeOfResize OcctWindow::DoResize()
-#else
-Aspect_TypeOfResize OcctWindow::DoResize() const
-#endif
 {
     int aMask = 0;
     Aspect_TypeOfResize aMode = Aspect_TOR_UNKNOWN;
@@ -121,11 +81,7 @@ Aspect_TypeOfResize OcctWindow::DoResize() const
         default: break;
         } // end switch
 
-#if OCC_VERSION_HEX >= 0x070500
         OcctWindow *mutableThis = this;
-#else
-        OcctWindow *mutableThis = const_cast<OcctWindow *>(this);
-#endif
 
         mutableThis->myXLeft = qRound(scale * myWidget->rect().left());
         mutableThis->myXRight = qRound(scale * myWidget->rect().right());
@@ -136,10 +92,6 @@ Aspect_TypeOfResize OcctWindow::DoResize() const
     return aMode;
 }
 
-// =======================================================================
-// function : Ratio
-// purpose  :
-// =======================================================================
 Standard_Real OcctWindow::Ratio() const
 {
     QRect aRect = myWidget->rect();
@@ -147,10 +99,6 @@ Standard_Real OcctWindow::Ratio() const
            Standard_Real(aRect.bottom() - aRect.top());
 }
 
-// =======================================================================
-// function : Size
-// purpose  :
-// =======================================================================
 void OcctWindow::Size(Standard_Integer &theWidth, Standard_Integer &theHeight) const
 {
     QRect aRect = myWidget->rect();
@@ -159,10 +107,6 @@ void OcctWindow::Size(Standard_Integer &theWidth, Standard_Integer &theHeight) c
     theHeight = qRound(scale * aRect.height());
 }
 
-// =======================================================================
-// function : Position
-// purpose  :
-// =======================================================================
 void OcctWindow::Position(Standard_Integer &theX1, Standard_Integer &theY1, Standard_Integer &theX2,
                           Standard_Integer &theY2) const
 {

@@ -20,7 +20,6 @@
 #include "base/signal.h"
 #include "graphics/graphics_object_driver.h"
 #include "graphics/graphics_scene.h"
-#include "graphics/graphics_view_ptr.h"
 
 #include "v3d_view_camera_animation.h"
 
@@ -69,10 +68,6 @@ public:
     const OccHandle<V3d_View> &v3dView() const
     {
         return m_v3dView;
-    }
-    GraphicsViewPtr graphicsView()
-    {
-        return GraphicsViewPtr{&m_gfxScene, m_v3dView};
     }
 
     // Gets the graphics scene, container of all document's graphics objects

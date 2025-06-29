@@ -8,7 +8,7 @@
 
 #include <QtWidgets/QTreeWidgetItem>
 
-#include "graphics/graphics_mesh_object_driver.h"
+#include "graphics/graphics_object_driver_mesh.h"
 
 #include "theme.h"
 #include "widget_model_tree.h"

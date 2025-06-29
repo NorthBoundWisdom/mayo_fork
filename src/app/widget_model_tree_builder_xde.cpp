@@ -14,7 +14,7 @@
 #include "base/property_enumeration.h"
 #include "base/settings.h"
 #include "base/xcaf.h"
-#include "graphics/graphics_shape_object_driver.h"
+#include "graphics/graphics_object_driver_shape.h"
 #include "qtcommon/qstring_conv.h"
 #include "qtcommon/qtcore_utils.h"
 

@@ -3,32 +3,13 @@
 ** All rights reserved.
 ** See license at https://github.com/fougue/mayo/blob/master/LICENSE.txt
 ****************************************************************************/
-
-#include <QtCore/QtGlobal>
-#ifdef Q_OS_WIN
-#include <windows.h>
-#endif
-
-#include <functional>
-
-#include <QtGui/QResizeEvent>
-
-#include <Aspect_DisplayConnection.hxx>
-#include <Aspect_NeutralWindow.hxx>
-#include <OpenGl_Context.hxx>
-#include <OpenGl_FrameBuffer.hxx>
-#include <OpenGl_GraphicDriver.hxx>
-#include <Standard_Version.hxx>
+#include "widget_occ_view_i.h"
 
 #include "base/occ_handle.h"
-#include "graphics/graphics_utils.h"
-
-#include "occt_window.h"
-#include "widget_occ_view.h"
 
 namespace Mayo
 {
-IWidgetOccView::Creator &getWidgetOccViewCreator()
+inline IWidgetOccView::Creator &getWidgetOccViewCreator()
 {
     static IWidgetOccView::Creator fn;
     return fn;

@@ -12,7 +12,7 @@
 namespace Mayo
 {
 extern OccHandle<Aspect_Window>
-graphicsCreateVirtualWindow([[maybe_unused]] const OccHandle<Graphic3d_GraphicDriver> &gfxDriver,
-                            int wndWidth, int wndHeight);
+graphicsCreateVirtualWindow(const OccHandle<Graphic3d_GraphicDriver> &gfxDriver, int wndWidth,
+                            int wndHeight);
 
 } // namespace Mayo

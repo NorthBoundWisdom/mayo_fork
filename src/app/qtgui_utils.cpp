@@ -150,15 +150,6 @@ QSize screenPixelSize(double widthRatio, double heightRatio, const QScreen *scre
                  QtGuiUtils::screenPixelHeight(heightRatio, screen));
 }
 
-QPoint globalPosition(const QMouseEvent *event)
-{
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    return event->globalPos();
-#else
-    return event->globalPosition().toPoint();
-#endif
-}
-
 FontChange::FontChange(const QFont &font)
     : m_font(font)
 {
@@ -198,12 +189,7 @@ FontChange &FontChange::fixedPitch(bool on)
 
 Quantity_Color toPreferredColorSpace(const QColor &c)
 {
-    // See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
-#if OCC_VERSION_HEX >= 0x070500
     return QtGuiUtils::toColor<Quantity_TOC_sRGB>(c);
-#else
-    return QtGuiUtils::toColor<Quantity_TOC_RGB>(c);
-#endif
 }
 
 QPixmap toQPixmap(const Image_PixMap &pixmap)
@@ -213,9 +199,7 @@ QPixmap toQPixmap(const Image_PixMap &pixmap)
         switch (occFormat)
         {
         case Image_Format_RGB: return QImage::Format_RGB888;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
         case Image_Format_BGR: return QImage::Format_BGR888;
-#endif
         case Image_Format_RGBA: return QImage::Format_ARGB32;
         case Image_Format_RGBF: return QImage::Format_RGB444;
         case Image_Format_Gray: return QImage::Format_Grayscale8;

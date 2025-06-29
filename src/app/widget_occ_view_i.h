@@ -26,6 +26,8 @@ namespace Mayo
 class IWidgetOccView
 {
 public:
+    virtual ~IWidgetOccView() = default;
+
     const OccHandle<V3d_View> &v3dView() const
     {
         return m_view;

@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <functional>
-
 #include <QOpenGLWidget>
 #include <QtWidgets/QWidget>
 

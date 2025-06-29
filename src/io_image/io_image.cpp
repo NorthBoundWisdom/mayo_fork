@@ -216,8 +216,8 @@ OccHandle<V3d_View> ImageWriter::createV3dView(GraphicsScene *gfxScene, const Pa
         {
         case CameraProjection::Orthographic: return Graphic3d_Camera::Projection_Orthographic;
         case CameraProjection::Perspective: return Graphic3d_Camera::Projection_Perspective;
-        default: return Graphic3d_Camera::Projection_Orthographic;
         }
+        return Graphic3d_Camera::Projection_Orthographic;
     };
 
     // Create 3D view

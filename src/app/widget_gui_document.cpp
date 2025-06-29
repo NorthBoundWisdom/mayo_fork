@@ -31,7 +31,6 @@
 #include "widget_occ_view_controller.h"
 #include "widget_occ_view_i.h"
 
-
 namespace Mayo
 {
 
@@ -238,7 +237,7 @@ void WidgetGuiDocument::toggleWidgetGrid(bool on)
 {
     if (!m_widgetGrid && on)
     {
-        m_widgetGrid = new WidgetGrid(m_guiDoc->graphicsView());
+        m_widgetGrid = new WidgetGrid(m_guiDoc->graphicsScene(), m_guiDoc->v3dView());
         auto container = this->createWidgetPanelContainer(m_widgetGrid);
         QObject::connect(
             m_widgetGrid, &WidgetGrid::sizeAdjustmentRequested, container,
@@ -252,7 +251,7 @@ void WidgetGuiDocument::toggleWidgetClipPlanes(bool on)
 {
     if (!m_widgetClipPlanes && on)
     {
-        m_widgetClipPlanes = new WidgetClipPlanes(m_guiDoc->graphicsView());
+        m_widgetClipPlanes = new WidgetClipPlanes(m_guiDoc->graphicsScene(), m_guiDoc->v3dView());
         this->createWidgetPanelContainer(m_widgetClipPlanes);
         m_guiDoc->signalGraphicsBoundingBoxChanged.connectSlot(&WidgetClipPlanes::setRanges,
                                                                m_widgetClipPlanes);
